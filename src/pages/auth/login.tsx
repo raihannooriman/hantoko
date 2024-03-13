@@ -65,6 +65,17 @@ const LoginPage = () => {
             {isLoading ? "Loading..." : "Login"}
           </button>
         </form>
+        <hr className="my-5" />
+        <div className="w-full">
+          <button
+            type="button"
+            onClick={() => signIn("google", { callbackUrl, redirect: false })}
+            className="bg-black text-white w-full p-2.5 flex justify-center items-center gap-1"
+          >
+            <i className="bx bxl-google text-2xl" />
+            Login with Google
+          </button>
+        </div>
       </div>
       <p>
         Dont have an account? sign up{" "}
