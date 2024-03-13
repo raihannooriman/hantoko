@@ -1,3 +1,5 @@
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
@@ -35,47 +37,15 @@ const RegisterPage = () => {
     <div className="flex items-center justify-center flex-col h-[100vh] w-[100vw]">
       <h1 className="text-3xl mb-2.5">Register</h1>
       {error && <p className="text-[#fd4141] mb-2.5">{error}</p>}
-      <div className="w-[30%] p-5 border shadow-sm mb-5">
+      <div className="w-[30%] p-5 border mb-2">
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col my-4">
-            <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              id="email"
-              type="email"
-              className="p-2.5 bg-[#eee] border-none outline-none"
-            />
-          </div>
-          <div className="flex flex-col my-4">
-            <label htmlFor="fullname">Fullname</label>
-            <input
-              name="fullname"
-              id="fullname"
-              type="text"
-              className="p-2.5 bg-[#eee] border-none outline-none"
-            />
-          </div>
-          <div className="flex flex-col my-4">
-            <label htmlFor="phone">Phone</label>
-            <input
-              name="phone"
-              id="phone"
-              type="number"
-              className="p-2.5 bg-[#eee] border-none outline-none"
-            />
-          </div>
-          <div className="flex flex-col my-4">
-            <label htmlFor="password">Password</label>
-            <input
-              name="password"
-              id="password"
-              type="password"
-              className="p-2.5 bg-[#eee] border-none outline-none"
-            />
-          </div>
-          <button type="submit" className="bg-black text-white w-full p-2.5">
+          <Input label="Email" name="email" type="email" />
+          <Input label="Fullname" name="fullname" type="text" />
+          <Input label="Phone" name="phone" type="number" />
+          <Input label="Password" name="password" type="password" />
+          <Button type="submit" className="w-full">
             {isLoading ? "Loading..." : "Register"}
-          </button>
+          </Button>
         </form>
       </div>
       <p>
