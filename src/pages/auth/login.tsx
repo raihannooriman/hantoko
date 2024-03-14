@@ -1,7 +1,7 @@
+import AuthLayout from "@/components/layout/authlayout";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
@@ -40,34 +40,29 @@ const LoginPage = () => {
     }
   };
   return (
-    <div className="flex items-center justify-center flex-col h-[100vh] w-[100vw]">
-      <h1 className="text-3xl mb-2.5">Login</h1>
-      {error && <p className="text-[#fd4141] mb-2.5">{error}</p>}
-      <div className="w-[30%] p-5 border mb-5">
-        <form onSubmit={handleSubmit}>
-          <Input label="Email" name="email" type="email" />
-          <Input label="Password" name="password" type="password" />
-          <Button type="submit" className="w-full">
-            {isLoading ? "Loading..." : "Login"}
-          </Button>
-        </form>
-        <hr className="my-5" />
-        <Button
-          type="submit"
-          className="w-full gap-1"
-          onClick={() => signIn("google", { callbackUrl, redirect: false })}
-        >
-          <i className="bx bxl-google text-2xl" />
-          Login with Google
+    <AuthLayout
+      title="Login"
+      error={error}
+      link="/auth/register"
+      linkText="Don't have an account? sign up"
+    >
+      <form onSubmit={handleSubmit}>
+        <Input label="Email" name="email" type="email" />
+        <Input label="Password" name="password" type="password" />
+        <Button type="submit" className="w-full">
+          {isLoading ? "Loading..." : "Login"}
         </Button>
-      </div>
-      <p>
-        Dont have an account? sign up{" "}
-        <Link className="text-[#23bebe]" href="/auth/register">
-          here
-        </Link>
-      </p>
-    </div>
+      </form>
+      <hr className="my-5" />
+      <Button
+        type="submit"
+        className="w-full gap-1"
+        onClick={() => signIn("google", { callbackUrl, redirect: false })}
+      >
+        <i className="bx bxl-google text-2xl" />
+        Login with Google
+      </Button>
+    </AuthLayout>
   );
 };
 export default LoginPage;
