@@ -10,7 +10,7 @@ const listSidebarItem = [
   },
   {
     title: "Products",
-    url: "/admin/products",
+    url: "/admin/product",
     icon: "bxs-cart",
   },
 ];
