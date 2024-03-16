@@ -15,7 +15,6 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const { pathname } = useRouter();
-  console.log(pathname.split("/")[1]);
   return (
     <SessionProvider session={session}>
       <div className={lato.className}>
