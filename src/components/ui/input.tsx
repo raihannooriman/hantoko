@@ -3,9 +3,11 @@ type Proptypes = {
   name: string;
   type: string;
   placeholder?: string;
+  defaultValue?: string;
+  disabled?: boolean;
 };
 const Input = (props: Proptypes) => {
-  const { label, name, type, placeholder } = props;
+  const { label, name, type, placeholder, defaultValue, disabled } = props;
   return (
     <div className="flex flex-col my-4">
       {label && <label htmlFor={name}>{label}</label>}
@@ -14,7 +16,9 @@ const Input = (props: Proptypes) => {
         id={name}
         type={type}
         placeholder={placeholder}
-        className="p-2.5 bg-[#eee] border-none outline-none"
+        defaultValue={defaultValue}
+        disabled={disabled}
+        className="p-2.5 bg-[#eee] border-none outline-none disabled:opacity-70"
       />
     </div>
   );

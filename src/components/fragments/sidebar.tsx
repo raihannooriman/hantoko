@@ -36,7 +36,7 @@ const Sidebar = (props: Proptypes) => {
         <Button
           type="button"
           onClick={() => signOut()}
-          className="bg-white text-black w-full"
+          className="bg-white !text-black w-full"
         >
           Logout
         </Button>

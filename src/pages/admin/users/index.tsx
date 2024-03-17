@@ -2,11 +2,16 @@ import AdminLayout from "@/components/layout/adminlayout";
 import userServices from "@/services/user";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/button";
-import Modal from "@/components/ui/modal";
+import ModalUpdateUser from "./modalUpdate";
+import ModalDeleteUser from "./modalDelete";
 
 const AdminUsersPage = () => {
-  const [modalUpdateUser, setModalUpdateUser] = useState<any>({});
+  const [updatedUser, setUpdatedUser] = useState<any>({});
   const [users, setUsers] = useState([]);
+  const [deleteUser, setDeletedUser] = useState<any>({});
+  useEffect(() => {
+    setUsers(users);
+  }, [users]);
   useEffect(() => {
     const getAllUsers = async () => {
       const { data } = await userServices.getAllUsers();
@@ -46,11 +51,18 @@ const AdminUsersPage = () => {
                       <div className="flex gap-2">
                         <Button
                           type="button"
-                          onClick={() => setModalUpdateUser(user)}
+                          onClick={() => setUpdatedUser(user)}
+                          className="bg-yellow-400"
                         >
-                          Update
+                          <i className="bx bxs-edit text-xl text-black" />
                         </Button>
-                        <Button type="button">Delete</Button>
+                        <Button
+                          type="button"
+                          className="bg-red-600"
+                          onClick={() => setDeletedUser(user)}
+                        >
+                          <i className="bx bxs-trash text-xl" />
+                        </Button>
                       </div>
                     </td>
                   </tr>
@@ -60,11 +72,19 @@ const AdminUsersPage = () => {
           </table>
         </div>
       </AdminLayout>
-      {Object.keys(modalUpdateUser).length && (
-        <Modal onClose={() => setModalUpdateUser({})}>
-          <h1 className=" text-2xl">Update User</h1>
-          <p>{modalUpdateUser.email}</p>
-        </Modal>
+      {Object.keys(updatedUser).length && (
+        <ModalUpdateUser
+          updatedUser={updatedUser}
+          setUpdatedUser={setUpdatedUser}
+          setUsers={setUsers}
+        ></ModalUpdateUser>
+      )}
+      {Object.keys(deleteUser).length && (
+        <ModalDeleteUser
+          deleteUser={deleteUser}
+          setDeletedUser={setDeletedUser}
+          setUsers={setUsers}
+        ></ModalDeleteUser>
       )}
     </>
   );
