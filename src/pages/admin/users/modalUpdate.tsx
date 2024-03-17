@@ -28,7 +28,7 @@ const ModalUpdateUser = (props: any) => {
   };
   return (
     <Modal onClose={() => setUpdatedUser({})}>
-      <h1 className=" text-2xl">Update User</h1>
+      <h1 className="text-2xl">Update User</h1>
       <form onSubmit={handleUpdateUser}>
         <Input
           label="Email"

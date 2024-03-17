@@ -1,5 +1,7 @@
 import { deleteData, retrieveData, updateData } from "@/lib/firebase/service";
 import type { NextApiRequest, NextApiResponse } from "next";
+import jwt from "jsonwebtoken";
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -28,16 +30,30 @@ export default async function handler(
     });
   } else if (req.method === "DELETE") {
     const { user }: any = req.query;
-    await deleteData("users", user[1], (result: boolean) => {
-      if (result) {
-        res
-          .status(200)
-          .json({ status: true, statusCode: 200, message: "success" });
-      } else {
-        res
-          .status(400)
-          .json({ status: false, statusCode: 400, message: "failed" });
+    const token = req.headers.authorization?.split("")[1] || "";
+    console.log(decoded);
+    jwt.verify(
+      token,
+      process.env.NEXTAUTH_SECRET || "",
+      async (err: any, decoded: any) => {
+        if (decoded) {
+          await deleteData("users", user[1], (result: boolean) => {
+            if (result) {
+              res
+                .status(200)
+                .json({ status: true, statusCode: 200, message: "success" });
+            } else {
+              res
+                .status(400)
+                .json({ status: false, statusCode: 400, message: "failed" });
+            }
+          });
+        } else {
+          res
+            .status(403)
+            .json({ status: false, statusCode: 403, message: "access Denied" });
+        }
       }
-    });
+    );
   }
 }
