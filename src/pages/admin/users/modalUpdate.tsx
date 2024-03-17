@@ -10,6 +10,7 @@ const ModalUpdateUser = (props: any) => {
   const { updatedUser, setUpdatedUser, setUsers } = props;
   const session: any = useSession();
   const [isLoading, setIsLoading] = useState(false);
+
   const handleUpdateUser = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -17,21 +18,30 @@ const ModalUpdateUser = (props: any) => {
     const data = {
       role: form.role.value,
     };
+
+    if (!updatedUser) {
+      console.error("updatedUser is undefined");
+      return;
+    }
+
     const result = await userServices.updateUser(
       updatedUser.id,
       data,
       session.data?.accessToken
     );
+
     console.log(result);
+
     if (result.status === 200) {
       setIsLoading(false);
       setUpdatedUser({});
-      const { data } = await userServices.getAllUsers();
-      setUsers(data.data);
+      const response = await userServices.getAllUsers();
+      setUsers(response.data.data);
     } else {
       setIsLoading(false);
     }
   };
+
   return (
     <Modal onClose={() => setUpdatedUser({})}>
       <h1 className="text-2xl">Update User</h1>
@@ -40,35 +50,36 @@ const ModalUpdateUser = (props: any) => {
           label="Email"
           name="email"
           type="email"
-          defaultValue={updatedUser.email}
+          defaultValue={updatedUser?.email || ""}
           disabled
         />
         <Input
           label="Fullname"
           name="fullname"
           type="text"
-          defaultValue={updatedUser.fullname}
+          defaultValue={updatedUser?.fullname || ""}
           disabled
         />
         <Input
           label="Phone"
           name="phone"
           type="number"
-          defaultValue={updatedUser.phone}
+          defaultValue={updatedUser?.phone || ""}
           disabled
         />
         <Select
           label="Role"
           name="role"
-          defaultValue={updatedUser.role}
+          defaultValue={updatedUser?.role || ""}
           options={[
             { label: "Member", value: "member" },
             { label: "Admin", value: "admin" },
           ]}
         />
-        <Button type="submit">Updated</Button>
+        <Button type="submit">Update</Button>
       </form>
     </Modal>
   );
 };
+
 export default ModalUpdateUser;
