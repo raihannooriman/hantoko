@@ -15,7 +15,7 @@ const Sidebar = (props: Proptypes) => {
   const { pathname } = useRouter();
   return (
     <div className="bg-black text-white p-5 w-52 h-screen flex justify-between flex-col">
-      <div className="">
+      <div>
         <h1 className="text-2xl text-bold mb-10 text-center">Admin Panel</h1>
         <div className="flex flex-col gap-2.5">
           {lists.map((list, index) => (
@@ -32,7 +32,7 @@ const Sidebar = (props: Proptypes) => {
           ))}
         </div>
       </div>
-      <div className="">
+      <div>
         <Button
           type="button"
           onClick={() => signOut()}
