@@ -14,7 +14,7 @@ const Sidebar = (props: Proptypes) => {
   const { lists } = props;
   const { pathname } = useRouter();
   return (
-    <div className="bg-black text-white p-5 w-52 h-screen flex justify-between flex-col">
+    <div className="bg-black text-white p-5 w-60 h-screen flex justify-between flex-col">
       <div>
         <h1 className="text-2xl text-bold mb-10 text-center">Admin Panel</h1>
         <div className="flex flex-col gap-2.5">
@@ -22,7 +22,7 @@ const Sidebar = (props: Proptypes) => {
             <Link
               href={list.url}
               key={list.title}
-              className={`text-lg flex gap-2.5 items-center hover:bg-white hover:text-black transition duration-300 py-2 px-2.5 ${
+              className={`text-lg flex gap-2.5 items-center hover:bg-white hover:text-black transition duration-300 py-2 px-2.5 rounded-lg ${
                 pathname === list.url ? `bg-white text-black` : ""
               }`}
             >

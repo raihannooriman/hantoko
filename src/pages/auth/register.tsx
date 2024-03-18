@@ -9,10 +9,12 @@ const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const { push } = useRouter();
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     setError("");
+
     const form = event.target as HTMLFormElement;
     const data = {
       email: form.email.value,
@@ -20,16 +22,20 @@ const RegisterPage = () => {
       phone: form.phone.value,
       password: form.password.value,
     };
-    const result = await authServices.registerAccount(data);
-    if (result.status === 200) {
-      form.reset();
+
+    try {
+      const result = await authServices.registerAccount(data);
+      if (result.status === 200) {
+        form.reset();
+        setIsLoading(false);
+        push("/auth/login");
+      }
+    } catch (error) {
       setIsLoading(false);
-      push("/auth/login");
-    } else {
-      setIsLoading(false);
-      setError("Email sudah terdaftar");
+      setError("Email telah terdaftar.");
     }
   };
+
   return (
     <AuthLayout
       title="Register"
@@ -49,4 +55,5 @@ const RegisterPage = () => {
     </AuthLayout>
   );
 };
+
 export default RegisterPage;

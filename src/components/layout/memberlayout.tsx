@@ -5,27 +5,27 @@ type Proptypes = {
 const listSidebarItem = [
   {
     title: "Dashboard",
-    url: "/admin",
+    url: "/member",
     icon: "bxs-dashboard",
   },
   {
-    title: "Products",
-    url: "/admin/product",
+    title: "Orders",
+    url: "/member/orders",
     icon: "bxs-cart",
   },
   {
-    title: "Users",
-    url: "/admin/users",
-    icon: "bxs-group",
+    title: "Profile",
+    url: "/member/profile",
+    icon: "bxs-user",
   },
 ];
-const AdminLayout = (props: Proptypes) => {
+const MemberLayout = (props: Proptypes) => {
   const { children } = props;
   return (
     <div className="flex">
       <Sidebar lists={listSidebarItem} />
-      <div className="py-10 px-14 w-full">{children}</div>
+      <div className="px-10 py-8 w-full">{children}</div>
     </div>
   );
 };
-export default AdminLayout;
+export default MemberLayout;

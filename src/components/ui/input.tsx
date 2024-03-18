@@ -18,7 +18,7 @@ const Input = (props: Proptypes) => {
         placeholder={placeholder}
         defaultValue={defaultValue}
         disabled={disabled}
-        className="p-2.5 bg-[#eee] border-none outline-none disabled:opacity-70"
+        className="p-2.5 bg-[#eee] border-none outline-none disabled:opacity-70 rounded-lg"
       />
     </div>
   );

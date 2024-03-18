@@ -12,7 +12,7 @@ const AuthLayout = (props: Proptypes) => {
     <div className="flex items-center justify-center flex-col h-[100vh] w-[100vw]">
       <h1 className="text-3xl mb-2.5">{title}</h1>
       {error && <p className="text-[#fd4141] mb-2.5">{error}</p>}
-      <div className="w-[30%] p-5 border mb-5">{children}</div>
+      <div className="w-[30%] p-5 border mb-5 rounded-lg">{children}</div>
       <p>
         {linkText}
         <Link className="text-[#23bebe]" href={link}>
