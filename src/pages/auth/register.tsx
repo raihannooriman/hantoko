@@ -41,7 +41,7 @@ const RegisterPage = () => {
       title="Register"
       error={error}
       link="/auth/login"
-      linkText="Have an account? sign in"
+      linkText="Have an account? sign in "
     >
       <form onSubmit={handleSubmit}>
         <Input label="Email" name="email" type="email" />

@@ -1,4 +1,5 @@
 import Navbar from "@/components/fragments/navbar";
+import Toaster from "@/components/ui/toaster";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
@@ -20,6 +21,7 @@ export default function App({
       <div className={lato.className}>
         {!disableNavbar.includes(pathname.split("/")[1]) && <Navbar />}
         <Component {...pageProps} />
+        <Toaster />
       </div>
     </SessionProvider>
   );

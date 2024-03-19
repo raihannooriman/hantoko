@@ -30,13 +30,11 @@ const ModalUpdateUser = (props: any) => {
       session.data?.accessToken
     );
 
-    console.log(result);
-
     if (result.status === 200) {
       setIsLoading(false);
       setUpdatedUser({});
-      const response = await userServices.getAllUsers();
-      setUsers(response.data.data);
+      const { data } = await userServices.getAllUsers();
+      setUsers(data.data);
     } else {
       setIsLoading(false);
     }

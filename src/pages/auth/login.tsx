@@ -44,7 +44,7 @@ const LoginPage = () => {
       title="Login"
       error={error}
       link="/auth/register"
-      linkText="Don't have an account? sign up"
+      linkText="Don't have an account? sign up "
     >
       <form onSubmit={handleSubmit}>
         <Input label="Email" name="email" type="email" />
