@@ -21,7 +21,7 @@ export default function App({
       <div className={lato.className}>
         {!disableNavbar.includes(pathname.split("/")[1]) && <Navbar />}
         <Component {...pageProps} />
-        <Toaster />
+        <Toaster className="success" message="Success update profile" />
       </div>
     </SessionProvider>
   );
