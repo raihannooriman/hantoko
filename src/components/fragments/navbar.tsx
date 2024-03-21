@@ -4,7 +4,7 @@ import Button from "../ui/button";
 const Navbar = () => {
   const { data } = useSession();
   return (
-    <div className="flex items-center justify-end w-full h-14 bg-black text-white fixed p-4">
+    <nav className="flex items-center justify-end w-full h-14 bg-black text-white fixed p-4">
       <Button
         type="button"
         className="bg-white !text-black !py-2 !px-3"
@@ -12,7 +12,7 @@ const Navbar = () => {
       >
         {data ? "Logout" : "Login"}
       </Button>
-    </div>
+    </nav>
   );
 };
 export default Navbar;
