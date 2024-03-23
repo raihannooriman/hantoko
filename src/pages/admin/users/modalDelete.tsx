@@ -4,10 +4,14 @@ import userServices from "@/services/user";
 import { useSession } from "next-auth/react";
 
 const ModalDeleteUser = (props: any) => {
-  const { deleteUser, setDeletedUser, setUsers } = props;
+  const { deleteUser, setDeletedUser, setUsers, setToaster } = props;
   const session: any = useSession();
   const handleDelete = async () => {
     userServices.deleteUser(deleteUser.id, session.data?.accessToken);
+    setToaster({
+      message: "Success delete user.",
+      className: "success",
+    });
     setDeletedUser({});
     const { data } = await userServices.getAllUsers();
     setUsers(data.data);

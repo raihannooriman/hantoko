@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const ProfilePage = () => {
+const ProfilePage = ({ setToaster }: any) => {
   const [profile, setProfile] = useState<any>({});
   const [changeImage, setChangeImage] = useState<any>({});
   const [isLoading, setIsLoading] = useState("");
@@ -43,6 +43,10 @@ const ProfilePage = () => {
         fullname: data.fullname,
         phone: data.phone,
       });
+      setToaster({
+        message: "Success update profile.",
+        className: "success",
+      });
       form.reset();
     } else {
       setIsLoading("");
@@ -72,12 +76,20 @@ const ProfilePage = () => {
               });
               setChangeImage({});
               e.target[0].value = "";
+              setToaster({
+                message: "Success change picture.",
+                className: "success",
+              });
             } else {
               setIsLoading("");
             }
           } else {
             setIsLoading("");
             setChangeImage({});
+            setToaster({
+              message: "failed change picture.",
+              className: "error",
+            });
           }
         }
       );
@@ -100,8 +112,16 @@ const ProfilePage = () => {
     if (result.status === 200) {
       setIsLoading("");
       form.reset();
+      setToaster({
+        message: "Success change password.",
+        className: "success",
+      });
     } else {
       setIsLoading("");
+      setToaster({
+        message: "Failed change picture.",
+        className: "failed",
+      });
     }
   };
   return (

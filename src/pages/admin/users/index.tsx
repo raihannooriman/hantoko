@@ -5,7 +5,11 @@ import Button from "@/components/ui/button";
 import ModalUpdateUser from "./modalUpdate";
 import ModalDeleteUser from "./modalDelete";
 
-const AdminUsersPage = () => {
+type PropTypes = {
+  setToaster: any;
+};
+const AdminUsersPage = (props: PropTypes) => {
+  const { setToaster } = props;
   const [updatedUser, setUpdatedUser] = useState<any>({});
   const [users, setUsers] = useState([]);
   const [deleteUser, setDeletedUser] = useState<any>({});
@@ -77,6 +81,7 @@ const AdminUsersPage = () => {
           updatedUser={updatedUser}
           setUpdatedUser={setUpdatedUser}
           setUsers={setUsers}
+          setToaster={setToaster}
         ></ModalUpdateUser>
       )}
       {Object.keys(deleteUser).length && (
@@ -84,6 +89,7 @@ const AdminUsersPage = () => {
           deleteUser={deleteUser}
           setDeletedUser={setDeletedUser}
           setUsers={setUsers}
+          setToaster={setToaster}
         ></ModalDeleteUser>
       )}
     </>
