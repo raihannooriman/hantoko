@@ -3,17 +3,19 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import authServices from "@/services/auth";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
-const RegisterPage = () => {
+const RegisterPage = ({
+  setToaster,
+}: {
+  setToaster: Dispatch<SetStateAction<{}>>;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const { push } = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    setError("");
 
     const form = event.target as HTMLFormElement;
     const data = {
@@ -29,19 +31,26 @@ const RegisterPage = () => {
         form.reset();
         setIsLoading(false);
         push("/auth/login");
+        setToaster({
+          className: "success",
+          message: "Register success",
+        });
       }
     } catch (error) {
       setIsLoading(false);
-      setError("Email telah terdaftar.");
+      setToaster({
+        className: "error",
+        message: "Email atau password salah",
+      });
     }
   };
 
   return (
     <AuthLayout
       title="Register"
-      error={error}
       link="/auth/login"
       linkText="Have an account? sign in "
+      setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
         <Input label="Email" name="email" type="email" />

@@ -4,7 +4,6 @@ import Modal from "@/components/ui/modal";
 import Select from "@/components/ui/select";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
-import { useSession } from "next-auth/react";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
 type PropTypes = {
@@ -12,11 +11,11 @@ type PropTypes = {
   setUpdatedUser: Dispatch<SetStateAction<{}>>;
   updatedUser: User | any;
   setUsers: Dispatch<SetStateAction<User[]>>;
+  session: any;
 };
 
 const ModalUpdateUser = (props: PropTypes) => {
-  const { updatedUser, setUpdatedUser, setUsers, setToaster } = props;
-  const session: any = useSession();
+  const { updatedUser, setUpdatedUser, setUsers, setToaster, session } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdateUser = async (event: FormEvent<HTMLFormElement>) => {

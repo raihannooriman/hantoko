@@ -3,6 +3,7 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import { uploadFile } from "@/lib/firebase/service";
 import userServices from "@/services/user";
+import { User } from "@/types/user.type";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import {
@@ -17,8 +18,8 @@ type PropTypes = {
   setToaster: Dispatch<SetStateAction<{}>>;
 };
 const ProfilePage = ({ setToaster }: PropTypes) => {
-  const [profile, setProfile] = useState<any>({});
-  const [changeImage, setChangeImage] = useState<any>({});
+  const [profile, setProfile] = useState<User | any>({});
+  const [changeImage, setChangeImage] = useState<File | any>({});
   const [isLoading, setIsLoading] = useState("");
   const session: any = useSession();
   useEffect(() => {
@@ -196,6 +197,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               type="number"
               name="phone"
               defaultValue={profile.phone}
+              placeholder="Input your phone number"
             />
             <Input
               label="Email"
@@ -223,13 +225,20 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               name="old-password"
               label="Old password"
               type="password"
+              disabled={profile.type === "google"}
+              placeholder="Enter your current password"
             ></Input>
             <Input
               name="new-password"
               label="New password"
               type="password"
+              disabled={profile.type === "google"}
+              placeholder="Enter your new password"
             ></Input>
-            <Button type="submit">
+            <Button
+              type="submit"
+              disabled={isLoading === "password" || profile.type === "google"}
+            >
               {isLoading === "password" ? "loading" : "Update Password"}
             </Button>
           </form>

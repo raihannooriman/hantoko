@@ -10,7 +10,7 @@ const Toaster = (props: PropTypes) => {
   const { message, className, setToaster } = props;
   return (
     <div
-      className={`fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 border rounded-lg shadow-sm px-8 py-4 overflow-hidden`}
+      className={`fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 border rounded-lg shadow-sm px-6 py-3 overflow-hidden bg-white`}
     >
       <div className="flex items-center justify-center gap-3">
         <div>

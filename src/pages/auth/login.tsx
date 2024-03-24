@@ -3,11 +3,14 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
-const LoginPage = () => {
+const LoginPage = ({
+  setToaster,
+}: {
+  setToaster: Dispatch<SetStateAction<{}>>;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const { push, query } = useRouter();
 
@@ -16,7 +19,6 @@ const LoginPage = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    setError("");
     const form = event.target as HTMLFormElement;
     try {
       const res = await signIn("credentials", {
@@ -30,21 +32,31 @@ const LoginPage = () => {
         setIsLoading(false);
         form.reset();
         push(callbackUrl);
+        setToaster({
+          className: "success",
+          message: "Login success",
+        });
       } else {
         setIsLoading(false);
-        setError("Email atau password salah");
+        setToaster({
+          className: "error",
+          message: "Email atau password salah",
+        });
       }
     } catch (error) {
       setIsLoading(false);
-      setError("email atau password salah");
+      setToaster({
+        className: "error",
+        message: "Login gagal, hubungi developer",
+      });
     }
   };
   return (
     <AuthLayout
       title="Login"
-      error={error}
       link="/auth/register"
       linkText="Don't have an account? sign up "
+      setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
         <Input label="Email" name="email" type="email" />
