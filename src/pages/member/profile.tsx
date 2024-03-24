@@ -5,9 +5,18 @@ import { uploadFile } from "@/lib/firebase/service";
 import userServices from "@/services/user";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
-const ProfilePage = ({ setToaster }: any) => {
+type PropTypes = {
+  setToaster: Dispatch<SetStateAction<{}>>;
+};
+const ProfilePage = ({ setToaster }: PropTypes) => {
   const [profile, setProfile] = useState<any>({});
   const [changeImage, setChangeImage] = useState<any>({});
   const [isLoading, setIsLoading] = useState("");
@@ -23,7 +32,7 @@ const ProfilePage = ({ setToaster }: any) => {
       getProfile();
     }
   }, [profile, session]);
-  const handleChangeProfile = async (e: any) => {
+  const handleChangeProfile = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading("profile");
     const form = e.target as HTMLFormElement;
@@ -32,7 +41,6 @@ const ProfilePage = ({ setToaster }: any) => {
       phone: form.phone.value,
     };
     const result = await userServices.updateProfile(
-      profile.id,
       data,
       session.data?.accessToken
     );
@@ -52,10 +60,11 @@ const ProfilePage = ({ setToaster }: any) => {
       setIsLoading("");
     }
   };
-  const handleChangeProfilePicture = (e: any) => {
+  const handleChangeProfilePicture = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading("picture");
-    const file = e.target[0]?.files[0];
+    const form = e.target as HTMLFormElement;
+    const file = form.image.files[0];
     if (file) {
       uploadFile(
         profile.id,
@@ -64,7 +73,6 @@ const ProfilePage = ({ setToaster }: any) => {
           if (status) {
             const data = { image: newImageURL };
             const result = await userServices.updateProfile(
-              profile.id,
               data,
               session.data?.accessToken
             );
@@ -75,7 +83,7 @@ const ProfilePage = ({ setToaster }: any) => {
                 image: newImageURL,
               });
               setChangeImage({});
-              e.target[0].value = "";
+              form.reset();
               setToaster({
                 message: "Success change picture.",
                 className: "success",
@@ -95,7 +103,7 @@ const ProfilePage = ({ setToaster }: any) => {
       );
     }
   };
-  const handleChangePassword = async (e: any) => {
+  const handleChangePassword = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading("password");
     const form = e.target as HTMLFormElement;
@@ -104,23 +112,24 @@ const ProfilePage = ({ setToaster }: any) => {
       oldPassword: form["old-password"].value,
       encryptedPassword: profile.password,
     };
-    const result = await userServices.updateProfile(
-      profile.id,
-      data,
-      session.data?.accessToken
-    );
-    if (result.status === 200) {
+    try {
+      const result = await userServices.updateProfile(
+        data,
+        session.data?.accessToken
+      );
+      if (result.status === 200) {
+        setIsLoading("");
+        form.reset();
+        setToaster({
+          message: "Success change password.",
+          className: "success",
+        });
+      }
+    } catch (error) {
       setIsLoading("");
-      form.reset();
       setToaster({
-        message: "Success change password.",
-        className: "success",
-      });
-    } else {
-      setIsLoading("");
-      setToaster({
-        message: "Failed change picture.",
-        className: "failed",
+        message: "Failed change password.",
+        className: "error",
       });
     }
   };

@@ -1,18 +1,20 @@
 import AdminLayout from "@/components/layout/adminlayout";
 import userServices from "@/services/user";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Button from "@/components/ui/button";
 import ModalUpdateUser from "./modalUpdate";
 import ModalDeleteUser from "./modalDelete";
+import { User } from "@/types/user.type";
 
 type PropTypes = {
-  setToaster: any;
+  setToaster: Dispatch<SetStateAction<{}>>;
 };
 const AdminUsersPage = (props: PropTypes) => {
   const { setToaster } = props;
-  const [updatedUser, setUpdatedUser] = useState<any>({});
-  const [users, setUsers] = useState([]);
-  const [deleteUser, setDeletedUser] = useState<any>({});
+  const [updatedUser, setUpdatedUser] = useState<User | {}>({});
+  const [users, setUsers] = useState<User[]>([]);
+  const [deleteUser, setDeletedUser] = useState<User | {}>({});
+  console.log(updatedUser);
   useEffect(() => {
     setUsers(users);
   }, [users]);
