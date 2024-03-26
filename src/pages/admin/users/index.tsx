@@ -16,7 +16,6 @@ const AdminUsersPage = (props: PropTypes) => {
   const [updatedUser, setUpdatedUser] = useState<User | {}>({});
   const [users, setUsers] = useState<User[]>([]);
   const [deleteUser, setDeletedUser] = useState<User | {}>({});
-  console.log(updatedUser);
   useEffect(() => {
     setUsers(users);
   }, [users]);
