@@ -33,13 +33,13 @@ const AdminUsersPage = (props: PropTypes) => {
           <h1 className="font-bold text-2xl">User Management</h1>
           <table className="w-full border-spacing-0 border-collapse border border-solid mt-5">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="text-left p-2">#</th>
-                <th className="text-left p-2">Fullname</th>
-                <th className="text-left p-2">Email</th>
-                <th className="text-left p-2">Phone</th>
-                <th className="text-left p-2">Role</th>
-                <th className="text-left p-2">Action</th>
+              <tr className="bg-gray-100 text-left">
+                <th className="p-2">#</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -47,15 +47,17 @@ const AdminUsersPage = (props: PropTypes) => {
                 return (
                   <tr
                     key={user.id}
-                    className={index % 2 === 1 ? "bg-gray-100" : "bg-white"}
+                    className={` ${
+                      index % 2 === 1 ? "bg-gray-100" : "bg-white"
+                    }`}
                   >
-                    <td className="p-2">{index + 1}</td>
-                    <td className="p-2">{user.fullname}</td>
-                    <td className="p-2">{user.email}</td>
-                    <td className="p-2">{user.phone}</td>
-                    <td className="p-2">{user.role}</td>
+                    <td className="px-2">{index + 1}</td>
+                    <td>{user.fullname}</td>
+                    <td>{user.email}</td>
+                    <td>{user.phone}</td>
+                    <td>{user.role}</td>
                     <td>
-                      <div className="flex gap-2">
+                      <div className="flex gap-3 py-1">
                         <Button
                           type="button"
                           onClick={() => setUpdatedUser(user)}
