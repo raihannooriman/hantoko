@@ -24,6 +24,9 @@ const ProductsAdminView = (props: PropTypes) => {
       <AdminLayout>
         <div>
           <h1 className="font-bold text-2xl">Product Management</h1>
+          <Button type="button" className="" onClick={() => {}}>
+            + Add Product
+          </Button>
           <table className="w-full border-spacing-0 border-collapse border border-solid mt-5">
             <thead>
               <tr className="bg-gray-100">
