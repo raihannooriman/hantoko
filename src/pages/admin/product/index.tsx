@@ -5,6 +5,7 @@ import Image from "next/image";
 import productServices from "@/services/product";
 import { convertIDR } from "@/utils/currency";
 import { Products } from "@/types/product.type";
+import ModalAddProduct from "./modalAddProduct";
 
 type PropTypes = {
   setToaster: Dispatch<SetStateAction<{}>>;
@@ -12,6 +13,7 @@ type PropTypes = {
 const ProductsAdminView = (props: PropTypes) => {
   const { setToaster } = props;
   const [products, setProducts] = useState<Products[]>([]);
+  const [modalAddProduct, setModalAddProduct] = useState(false);
   const getAllProducts = async () => {
     const { data } = await productServices.getAllProducts();
     setProducts(data.data);
@@ -24,10 +26,14 @@ const ProductsAdminView = (props: PropTypes) => {
       <AdminLayout>
         <div>
           <h1 className="font-bold text-2xl">Product Management</h1>
-          <Button type="button" className="" onClick={() => {}}>
+          <Button
+            type="button"
+            className="mt-5 py-4 px-5"
+            onClick={() => setModalAddProduct(true)}
+          >
             + Add Product
           </Button>
-          <table className="w-full border-spacing-0 border-collapse border border-solid mt-5">
+          <table className="w-full border border-solid mt-5">
             <thead>
               <tr className="bg-gray-100">
                 <th>#</th>
@@ -69,6 +75,13 @@ const ProductsAdminView = (props: PropTypes) => {
           </table>
         </div>
       </AdminLayout>
+      {modalAddProduct && (
+        <ModalAddProduct
+          setModalAddProduct={setModalAddProduct}
+          setToaster={setToaster}
+          setProduct={setProducts}
+        />
+      )}
     </>
   );
 };

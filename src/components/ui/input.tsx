@@ -21,7 +21,7 @@ const Input = (props: Proptypes) => {
         defaultValue={defaultValue}
         disabled={disabled}
         onChange={onChange}
-        className="p-2.5 bg-[#eee] border-none outline-none disabled:opacity-70 rounded-lg"
+        className="p-2.5 mt-2 bg-[#eee] border-none outline-none disabled:opacity-70 rounded-lg"
       />
     </div>
   );

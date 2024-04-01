@@ -16,7 +16,7 @@ const Select = (props: Proptypes) => {
         id={name}
         defaultValue={defaultValue}
         disabled={disabled}
-        className="p-2.5 bg-[#eee] border-none outline-none disabled:opacity-70"
+        className="p-2.5 mt-2 bg-[#eee] border-none outline-none disabled:opacity-70"
       >
         {options.map((option) => (
           <option value={option.value} key={option.label}>
