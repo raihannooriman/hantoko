@@ -2,12 +2,15 @@ import { Product } from "@/types/product.type";
 import { convertIDR } from "@/utils/currency";
 import Image from "next/image";
 
-type Proptypes = { product: Product; key: string };
+type PropTypes = { product: Product };
 
-const Card = (props: Proptypes) => {
-  const { product, key } = props;
+const Card = ({ product }: PropTypes) => {
+  if (!product || !product.image) {
+    return null;
+  }
+
   return (
-    <div key={key} className="cursor-pointer">
+    <div className="cursor-pointer">
       <Image
         className="w-full aspect-square h-auto rounded-lg"
         src={product.image}
@@ -21,4 +24,5 @@ const Card = (props: Proptypes) => {
     </div>
   );
 };
+
 export default Card;

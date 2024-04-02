@@ -18,9 +18,14 @@ type Proptypes = {
 };
 
 const ModalUpdateProduct = (props: Proptypes) => {
-  const { updatedProduct, setUpdatedProduct, setToaster, setProduct } = props;
+  const {
+    updatedProduct = {},
+    setUpdatedProduct,
+    setToaster,
+    setProduct,
+  } = props;
   const [isLoading, setIsLoading] = useState(false);
-  const [stockCount, setStockCount] = useState(updatedProduct.stock);
+  const [stockCount, setStockCount] = useState(updatedProduct.stock ?? []);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const session: any = useSession();
   const handleStock = (e: any, i: number, type: string) => {
