@@ -1,13 +1,11 @@
 import productServices from "@/services/product";
-import { Products } from "@/types/product.type";
-import { convertIDR } from "@/utils/currency";
+import { Product } from "@/types/product.type";
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Card from "./card";
 
 const ProductPage = () => {
-  const [products, setProducts] = useState<Products[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const getAllProducts = async () => {
     const { data } = await productServices.getAllProducts();
     setProducts(data.data);

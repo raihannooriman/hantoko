@@ -4,16 +4,20 @@ import Button from "@/components/ui/button";
 import Image from "next/image";
 import productServices from "@/services/product";
 import { convertIDR } from "@/utils/currency";
-import { Products } from "@/types/product.type";
+import { Product } from "@/types/product.type";
 import ModalAddProduct from "./modalAddProduct";
+import ModalUpdateProduct from "./modalUpdateProduct";
+import ModalDeleteProduct from "./modalDelete";
 
 type PropTypes = {
   setToaster: Dispatch<SetStateAction<{}>>;
 };
 const ProductsAdminView = (props: PropTypes) => {
   const { setToaster } = props;
-  const [products, setProducts] = useState<Products[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [modalAddProduct, setModalAddProduct] = useState(false);
+  const [updatedProduct, setUpdatedProduct] = useState<Product | {}>({});
+  const [deletedProduct, setDeletedProduct] = useState<Product | {}>({});
   const getAllProducts = async () => {
     const { data } = await productServices.getAllProducts();
     setProducts(data.data);
@@ -61,10 +65,18 @@ const ProductsAdminView = (props: PropTypes) => {
                   <td>{convertIDR(product.price)}</td>
                   <td>
                     <div className="flex gap-2 justify-center">
-                      <Button type="button" className="bg-yellow-400">
+                      <Button
+                        type="button"
+                        className="bg-yellow-400"
+                        onClick={() => setUpdatedProduct(product)}
+                      >
                         <i className="bx bxs-edit text-xl text-black" />
                       </Button>
-                      <Button type="button" className="bg-red-600">
+                      <Button
+                        type="button"
+                        className="bg-red-600"
+                        onClick={() => setDeletedProduct(product)}
+                      >
                         <i className="bx bxs-trash text-xl" />
                       </Button>
                     </div>
@@ -78,6 +90,22 @@ const ProductsAdminView = (props: PropTypes) => {
       {modalAddProduct && (
         <ModalAddProduct
           setModalAddProduct={setModalAddProduct}
+          setToaster={setToaster}
+          setProduct={setProducts}
+        />
+      )}
+      {Object.keys(updatedProduct).length > 0 && (
+        <ModalUpdateProduct
+          setUpdatedProduct={setUpdatedProduct}
+          updatedProduct={updatedProduct}
+          setToaster={setToaster}
+          setProduct={setProducts}
+        />
+      )}
+      {Object.keys(deletedProduct).length > 0 && (
+        <ModalDeleteProduct
+          setDeletedProduct={setDeletedProduct}
+          deletedProduct={deletedProduct}
           setToaster={setToaster}
           setProduct={setProducts}
         />

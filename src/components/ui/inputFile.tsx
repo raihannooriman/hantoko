@@ -8,7 +8,7 @@ type Proptypes = {
 const InputFile = (props: Proptypes) => {
   const { uploadedImage, setUploadedImage, name } = props;
   return (
-    <div className="">
+    <div className="w-full">
       <label
         className="mt-2 bg-[#eee] flex flex-col items-center justify-center text-center gap-5 p-5 cursor-pointer rounded-lg float-left w-full mb-5"
         htmlFor={name}

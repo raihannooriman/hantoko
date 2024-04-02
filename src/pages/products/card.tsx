@@ -1,8 +1,8 @@
-import { Products } from "@/types/product.type";
+import { Product } from "@/types/product.type";
 import { convertIDR } from "@/utils/currency";
 import Image from "next/image";
 
-type Proptypes = { product: Products; key: string };
+type Proptypes = { product: Product; key: string };
 
 const Card = (props: Proptypes) => {
   const { product, key } = props;
