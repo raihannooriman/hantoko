@@ -28,7 +28,6 @@ const ModalDeleteProduct = (props: PropTypes) => {
           deletedProduct.image.split("%2F")[3].split("?")[0]
         }`,
         async (status: boolean) => {
-          console.log(status);
           if (status) {
             setToaster({
               message: "Success delete product.",
