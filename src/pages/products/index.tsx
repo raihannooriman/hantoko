@@ -3,6 +3,7 @@ import { Product } from "@/types/product.type";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Card from "./card";
+import Link from "next/link";
 
 const ProductPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -44,7 +45,9 @@ const ProductPage = () => {
           </div>
           <div className="w-full grid gap-5 grid-cols-3 gap-y-10">
             {products.map((product) => (
-              <Card product={product} key={product.id} />
+              <Link key={product.id} href={`/products/${product.id}`}>
+                <Card product={product} />
+              </Link>
             ))}
           </div>
         </div>
