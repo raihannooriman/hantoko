@@ -1,16 +1,62 @@
 import Button from "@/components/ui/button";
 import productServices from "@/services/product";
+import userServices from "@/services/user";
 import { Product } from "@/types/product.type";
 import { convertIDR } from "@/utils/currency";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const DetailProductPage = () => {
+const DetailProductPage = ({
+  setToaster,
+}: {
+  setToaster: Dispatch<SetStateAction<{}>>;
+}) => {
   const { id } = useRouter().query;
+  const session: any = useSession();
   const [product, setProduct] = useState<Product | any>({});
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [cart, setCart] = useState<any>([]);
+  const { status } = useSession();
+  const router = useRouter();
+  const [selectedSize, setSelectedSize] = useState("");
+  const handleAddToCart = async () => {
+    if (selectedSize !== "") {
+      let newCart = [];
+      if (
+        cart.filter((item: any) => item.id === id && item.size === selectedSize)
+          .length > 0
+      ) {
+        newCart = cart.map((item: any) => {
+          if (item.id === id && item.size === selectedSize) {
+            item.qty += 1;
+          }
+          return item;
+        });
+      } else {
+        newCart = [...cart, { id, size: selectedSize, qty: 1 }];
+      }
+      try {
+        const result = await userServices.addToCart(
+          { carts: newCart },
+          session?.data?.accessToken
+        );
+        if (result.status === 200) {
+          setSelectedSize("");
+          setToaster({
+            message: "Success add to cart.",
+            className: "success",
+          });
+        }
+      } catch (error) {
+        setToaster({
+          message: "Error add to cart.",
+          className: "error",
+        });
+      }
+    }
+  };
   const getDetailProduct = async (id: string) => {
     const { data } = await productServices.getDetailProduct(id);
     setProduct(data.data);
@@ -18,9 +64,18 @@ const DetailProductPage = () => {
   const handleSizeChange = (size: string) => {
     setSelectedSize(size);
   };
+  const getCart = async (token: string) => {
+    const { data } = await userServices.getCart(token);
+    setCart(data.data);
+  };
   useEffect(() => {
     getDetailProduct(id as string);
   }, [id]);
+  useEffect(() => {
+    if (session.data?.accessToken) {
+      getCart(session.data?.accessToken);
+    }
+  }, [session]);
   return (
     <>
       <Head>
@@ -51,6 +106,7 @@ const DetailProductPage = () => {
                     name="size"
                     className="appearance-none"
                     disabled={item.qty === 0}
+                    onClick={() => setSelectedSize(item.size)}
                     onChange={() => handleSizeChange(item.size)}
                     checked={selectedSize === item.size}
                   />
@@ -65,7 +121,15 @@ const DetailProductPage = () => {
                 </div>
               ))}
             </div>
-            <Button type="submit" className="mt-10 w-full">
+            <Button
+              type={status === "authenticated" ? "submit" : "button"}
+              onClick={() => {
+                status === "unauthenticated"
+                  ? router.push(`/auth/login?callbackUrl=${router.asPath}`)
+                  : handleAddToCart();
+              }}
+              className="mt-10 w-full"
+            >
               Add to cart
             </Button>
           </div>
