@@ -9,14 +9,14 @@ type Proptypes = {
 const Select = (props: Proptypes) => {
   const { label, name, defaultValue, disabled, options } = props;
   return (
-    <div className="flex flex-col my-4">
+    <div className="flex flex-col bg-[#eee] rounded-lg pr-2">
       <label htmlFor={name}>{label}</label>
       <select
         name={name}
         id={name}
         defaultValue={defaultValue}
         disabled={disabled}
-        className="p-2.5 mt-2 bg-[#eee] border-none outline-none disabled:opacity-70"
+        className="p-2.5 bg-transparent border-none outline-none disabled:opacity-70"
       >
         {options.map((option) => (
           <option value={option.value} key={option.label}>

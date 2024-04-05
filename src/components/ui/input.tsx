@@ -6,12 +6,21 @@ type Proptypes = {
   defaultValue?: string | number;
   disabled?: boolean;
   onChange?: (e: any) => void;
+  className?: string;
 };
-const Input = (props: Proptypes) => {
-  const { label, name, type, placeholder, defaultValue, disabled, onChange } =
-    props;
+
+const Input = ({
+  label,
+  name,
+  type,
+  placeholder,
+  defaultValue,
+  disabled,
+  onChange,
+  className = "",
+}: Proptypes) => {
   return (
-    <div className="flex flex-col my-4">
+    <div className="flex flex-col">
       {label && <label htmlFor={name}>{label}</label>}
       <input
         name={name}
@@ -21,9 +30,10 @@ const Input = (props: Proptypes) => {
         defaultValue={defaultValue}
         disabled={disabled}
         onChange={onChange}
-        className="p-2.5 mt-2 bg-[#eee] border-none outline-none disabled:opacity-70 rounded-lg"
+        className={`p-2.5 bg-[#eee] border-none outline-none disabled:opacity-70 rounded-lg ${className}`}
       />
     </div>
   );
 };
+
 export default Input;
