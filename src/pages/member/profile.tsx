@@ -194,6 +194,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               type="text"
               name="fullname"
               defaultValue={profile.fullname}
+              className="my-2"
             />
             <Input
               label="Phone"
@@ -201,6 +202,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               name="phone"
               defaultValue={profile.phone}
               placeholder="Input your phone number"
+              className="my-2"
             />
             <Input
               label="Email"
@@ -208,6 +210,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               name="email"
               defaultValue={profile.email}
               disabled
+              className="my-2"
             />
             <Input
               label="Role"
@@ -215,6 +218,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               name="role"
               defaultValue={profile.role}
               disabled
+              className="my-2"
             />
             <Button type="submit">
               {isLoading === "profile" ? "loading" : "Update Profile"}
@@ -230,6 +234,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               type="password"
               disabled={profile.type === "google"}
               placeholder="Enter your current password"
+              className="my-2"
             ></Input>
             <Input
               name="new-password"
@@ -237,6 +242,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
               type="password"
               disabled={profile.type === "google"}
               placeholder="Enter your new password"
+              className="my-2"
             ></Input>
             <Button
               type="submit"

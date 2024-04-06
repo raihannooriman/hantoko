@@ -59,9 +59,14 @@ const LoginPage = ({
       setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
-        <Input label="Email" name="email" type="email" />
-        <Input label="Password" name="password" type="password" />
-        <Button type="submit" className="w-full">
+        <Input className="my-2" label="Email" name="email" type="email" />
+        <Input
+          className="my-2"
+          label="Password"
+          name="password"
+          type="password"
+        />
+        <Button type="submit" className="w-full my-2">
           {isLoading ? "Loading..." : "Login"}
         </Button>
       </form>

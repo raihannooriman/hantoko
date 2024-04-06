@@ -58,13 +58,14 @@ const ModalUpdateUser = (props: PropTypes) => {
   return (
     <Modal onClose={() => setUpdatedUser({})}>
       <h1 className="text-2xl">Update User</h1>
-      <form onSubmit={handleUpdateUser}>
+      <form onSubmit={handleUpdateUser} className="mt-2">
         <Input
           label="Email"
           name="email"
           type="email"
           defaultValue={updatedUser?.email || ""}
           disabled
+          className="my-2"
         />
         <Input
           label="Fullname"
@@ -72,6 +73,7 @@ const ModalUpdateUser = (props: PropTypes) => {
           type="text"
           defaultValue={updatedUser?.fullname || ""}
           disabled
+          className="my-2"
         />
         <Input
           label="Phone"
@@ -79,6 +81,7 @@ const ModalUpdateUser = (props: PropTypes) => {
           type="number"
           defaultValue={updatedUser?.phone || ""}
           disabled
+          className="my-2"
         />
         <Select
           label="Role"
@@ -88,8 +91,11 @@ const ModalUpdateUser = (props: PropTypes) => {
             { label: "Member", value: "member" },
             { label: "Admin", value: "admin" },
           ]}
+          className="my-2"
         />
-        <Button type="submit">{isLoading ? "Updating..." : "Update"}</Button>
+        <Button className="mt-5" type="submit">
+          {isLoading ? "Updating..." : "Update"}
+        </Button>
       </form>
     </Modal>
   );

@@ -73,12 +73,15 @@ const ModalAddProduct = (props: Proptypes) => {
     event.preventDefault();
     setIsLoading(true);
     const form: any = event.target as HTMLFormElement;
+    const stock = stockCount.map((stock) => {
+      return { size: stock.size, qty: parseInt(`${stock.qty}`) };
+    });
     const data = {
       name: form.name.value,
-      price: form.price.value,
+      price: parseInt(form.price.value),
       category: form.category.value,
       status: form.status.value,
-      stock: stockCount,
+      stock: stock,
       image: "",
     };
     const result = await productServices.addProduct(
@@ -91,19 +94,21 @@ const ModalAddProduct = (props: Proptypes) => {
   };
   return (
     <Modal onClose={() => setModalAddProduct(false)}>
-      <h1 className="text-2xl">Update User</h1>
-      <form onSubmit={handleSubmit} className="w-full">
+      <h1>Add Product</h1>
+      <form onSubmit={handleSubmit} className="w-full mt-2">
         <Input
           label="Name"
           name="name"
           type="text"
           placeholder="Insert product name"
+          className="my-2"
         />
         <Input
           label="Price"
           name="price"
           type="number"
           placeholder="Insert price"
+          className="my-2"
         />
         <Select
           label="Category"
@@ -112,6 +117,7 @@ const ModalAddProduct = (props: Proptypes) => {
             { label: "Men", value: "men" },
             { label: "Women", value: "women" },
           ]}
+          className="my-2"
         />
         <Select
           label="Status"
@@ -120,6 +126,7 @@ const ModalAddProduct = (props: Proptypes) => {
             { label: "Release", value: "true" },
             { label: "Not Release", value: "false" },
           ]}
+          className="my-2"
         />
         <label htmlFor="image">Image</label>
         <div className="mt-2 mb-4 flex items-center gap-5">
@@ -144,7 +151,7 @@ const ModalAddProduct = (props: Proptypes) => {
         </div>
         <label htmlFor="stock">Stock</label>
         {stockCount.map((item: { size: string; qty: number }, i: number) => (
-          <div className="flex w-full gap-4" key={i}>
+          <div className="flex w-full gap-4 mb-5" key={i}>
             <div className="w-1/2 -mb-5">
               <Input
                 label="Size"
@@ -171,7 +178,7 @@ const ModalAddProduct = (props: Proptypes) => {
         ))}
         <Button
           type="button"
-          className="py-2 px-4 text-xs rounded-2xl my-5"
+          className="py-2 px-4 text-xs rounded-2xl my-8"
           onClick={() => setStockCount([...stockCount, { size: "", qty: 0 }])}
         >
           Add New Stock

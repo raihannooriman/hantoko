@@ -53,11 +53,16 @@ const RegisterPage = ({
       setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
-        <Input label="Email" name="email" type="email" />
-        <Input label="Fullname" name="fullname" type="text" />
-        <Input label="Phone" name="phone" type="number" />
-        <Input label="Password" name="password" type="password" />
-        <Button type="submit" className="w-full">
+        <Input className="my-2" label="Email" name="email" type="email" />
+        <Input className="my-2" label="Fullname" name="fullname" type="text" />
+        <Input className="my-2" label="Phone" name="phone" type="number" />
+        <Input
+          className="my-2"
+          label="Password"
+          name="password"
+          type="password"
+        />
+        <Button type="submit" className="w-full my-2">
           {isLoading ? "Loading..." : "Register"}
         </Button>
       </form>

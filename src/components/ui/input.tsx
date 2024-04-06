@@ -20,7 +20,7 @@ const Input = ({
   className = "",
 }: Proptypes) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-1">
       {label && <label htmlFor={name}>{label}</label>}
       <input
         name={name}
