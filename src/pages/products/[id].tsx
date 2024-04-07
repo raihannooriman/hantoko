@@ -81,23 +81,24 @@ const DetailProductPage = ({
       <Head>
         <title>Products</title>
       </Head>
-      <div className="py-[20vh] px-[25vw]">
+      <div className="py-[20vh] px-[20vw]">
         <div className="flex gap-14">
-          <div className="w-1/2">
+          <div className="w-[60%]">
             <Image
               src={product?.image}
               alt={product?.name}
               width={400}
               height={400}
-              className="w-full h-auto scale-100"
+              className="w-full h-auto aspect-square rounded-lg"
             />
           </div>
-          <div className="w-1/2">
+          <div className="w-[40%]">
             <h1 className="font-bold text-2xl">{product?.name}</h1>
             <h3>{product?.category}</h3>
-            <h3 className="font-bold mt-3">{convertIDR(product?.price)}</h3>
-            <p className=" mt-7">Select size</p>
-            <div className="grid grid-cols-3 gap-3">
+            <h3 className="font-bold mt-2">{convertIDR(product?.price)}</h3>
+            <p className="mt-2 text-justify">{product?.description}</p>
+            <p className="mt-2">Select size</p>
+            <div className="grid grid-cols-3 gap-3 -mt-3">
               {product?.stock?.map((item: { size: string; qty: number }) => (
                 <div key={item.size}>
                   <input

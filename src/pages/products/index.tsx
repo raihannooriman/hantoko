@@ -19,7 +19,7 @@ const ProductPage = () => {
       <Head>
         <title>Product</title>
       </Head>
-      <div className="px-5 py-20">
+      <div className="px-5 py-32 pb-24">
         <h1 className="font-medium text-2xl">
           All Product ({products.length})
         </h1>
