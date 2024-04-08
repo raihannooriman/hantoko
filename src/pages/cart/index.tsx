@@ -77,13 +77,15 @@ const CartPage = (props: Proptypes) => {
             {cart.map((item: { id: string; size: string; qty: number }) => (
               <Fragment key={`${item.id}-${item.size}`}>
                 <div className="w-full flex gap-5">
-                  <Image
-                    src={`${getProduct(item.id)?.image}`}
-                    width={160}
-                    height={160}
-                    alt={`${item.id}-${item.size}`}
-                    className="w-36 h-36 rounded-lg"
-                  />
+                  {getProduct(item.id)?.image && (
+                    <Image
+                      src={`${getProduct(item.id)?.image}`}
+                      width={160}
+                      height={160}
+                      alt={`${item.id}-${item.size}`}
+                      className="w-36 h-36 rounded-lg"
+                    />
+                  )}
                   <div className="w-full">
                     <h4 className="font-bold text-lg">
                       {getProduct(item.id)?.name}
@@ -95,7 +97,7 @@ const CartPage = (props: Proptypes) => {
                         <Select
                           name="size"
                           options={getOptionSize(item.id, item.size)}
-                        ></Select>
+                        />
                       </label>
                       <label className="flex items-center gap-2">
                         Quantity
@@ -111,7 +113,7 @@ const CartPage = (props: Proptypes) => {
                       <i className="bx bxs-trash text-xl" />
                     </button>
                   </div>
-                  <div className="">
+                  <div>
                     <h4 className="font-bold text-lg">
                       {convertIDR(getProduct(item.id)?.price)}
                     </h4>

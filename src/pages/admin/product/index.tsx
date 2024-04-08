@@ -29,7 +29,7 @@ const ProductsAdminView = (props: PropTypes) => {
     <>
       <AdminLayout>
         <div>
-          <h1 className="font-bold text-2xl">Product Management</h1>
+          <h1 className="font-bold">Product Management</h1>
           <Button
             type="button"
             className="mt-5 py-4 px-5"

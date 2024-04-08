@@ -20,9 +20,7 @@ const ProductPage = () => {
         <title>Product</title>
       </Head>
       <div className="px-5 py-32 pb-24">
-        <h1 className="font-medium text-2xl">
-          All Product ({products.length})
-        </h1>
+        <h1 className="font-medium">All Product ({products.length})</h1>
         <div className="flex gap-14">
           <div className="w-[15%]">
             <div className="p-5 border-b border-solid border-black">

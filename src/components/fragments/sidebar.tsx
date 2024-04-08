@@ -16,7 +16,7 @@ const Sidebar = (props: Proptypes) => {
   return (
     <div className="bg-black text-white p-5 w-60 h-screen flex justify-between flex-col">
       <div>
-        <h1 className="text-2xl text-bold mb-10 text-center">Panel</h1>
+        <h1 className="mb-10 text-center">Panel</h1>
         <div className="flex flex-col gap-2.5">
           {lists.map((list, index) => (
             <Link

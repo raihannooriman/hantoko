@@ -139,7 +139,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
   };
   return (
     <MemberLayout>
-      <h1 className="text-3xl font-bold">Profile</h1>
+      <h1 className="font-bold">Profile</h1>
       <div className="flex gap-5 mt-5">
         <div className="flex items-center justify-center w-[25%] flex-col p-3">
           <p className="text-2xl mb-5">Edit Picture</p>

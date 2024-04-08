@@ -24,7 +24,7 @@ const Select = (props: Proptypes) => {
           disabled={disabled}
           className="p-2.5 bg-transparent outline-none disabled:opacity-70"
         >
-          {options.map((option: Option) => (
+          {options?.map((option: Option) => (
             <option
               value={option.value}
               key={option.label}

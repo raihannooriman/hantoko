@@ -79,6 +79,7 @@ const ModalAddProduct = (props: Proptypes) => {
     const data = {
       name: form.name.value,
       price: parseInt(form.price.value),
+      description: form.description.value,
       category: form.category.value,
       status: form.status.value,
       stock: stock,
@@ -108,6 +109,13 @@ const ModalAddProduct = (props: Proptypes) => {
           name="price"
           type="number"
           placeholder="Insert price"
+          className="my-2"
+        />
+        <Input
+          label="Description"
+          name="description"
+          type="text"
+          placeholder="Insert description"
           className="my-2"
         />
         <Select

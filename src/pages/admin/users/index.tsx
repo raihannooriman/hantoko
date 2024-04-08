@@ -30,7 +30,7 @@ const AdminUsersPage = (props: PropTypes) => {
     <>
       <AdminLayout>
         <div>
-          <h1 className="font-bold text-2xl">User Management</h1>
+          <h1 className="font-bold">User Management</h1>
           <table className="w-full border-spacing-0 border-collapse border border-solid mt-5">
             <thead>
               <tr className="bg-gray-100 text-left">

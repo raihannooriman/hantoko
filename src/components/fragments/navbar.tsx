@@ -3,6 +3,7 @@ import Button from "../ui/button";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useState } from "react";
 
 const NavItems = [
   { title: "Home", url: "/" },
@@ -11,6 +12,7 @@ const NavItems = [
 const Navbar = () => {
   const { data }: any = useSession();
   const { pathname, push } = useRouter();
+  const [dropdownUser, setDropdownUser] = useState(false);
   return (
     <nav className="flex items-center justify-between w-full h-14 bg-white text-black fixed py-4 px-[2vw]">
       <h1>Hantoko</h1>
@@ -29,31 +31,47 @@ const Navbar = () => {
           </Link>
         ))}
       </div>
-      <div className="">
-        <div className="relative">
-          <Image
-            width={40}
-            height={40}
-            src={data?.user.image}
-            alt={data?.user.name}
-            className="rounded-full"
-          />
-          <div className="absolute border shadow-none bg-opacity-50 right-0 rounded-lg flex flex-col">
-            <button
-              className="w-28 text-left py-1 px-4 bg-transparent hover:bg-[#eee]"
-              onClick={() => push("/member/profile")}
+      {data ? (
+        <div className="flex gap-3 items-center">
+          <div>
+            <Link href={"/cart"}>
+              <i className="bx bxs-cart cursor-pointer text-4xl" />
+            </Link>
+          </div>
+          <div className="relative">
+            <Image
+              width={40}
+              height={40}
+              src={data?.user.image}
+              alt={data?.user.name}
+              className="rounded-full"
+              onClick={() => setDropdownUser(!dropdownUser)}
+            />
+            <div
+              className={`absolute top-10 border shadow-none bg-opacity-50 right-0 rounded-lg flex-col ${
+                dropdownUser ? "flex z-[1]" : "hidden"
+              }`}
             >
-              Profile
-            </button>
-            <button
-              className="w-28 text-left py-1 px-4 bg-transparent hover:bg-[#eee]"
-              onClick={() => signOut()}
-            >
-              Logout
-            </button>
+              <button
+                className="w-28 text-left py-1 px-4 bg-transparent hover:bg-[#eee]"
+                onClick={() => push("/member/profile")}
+              >
+                Profile
+              </button>
+              <button
+                className="w-28 text-left py-1 px-4 bg-transparent hover:bg-[#eee]"
+                onClick={() => signOut()}
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <Button type="button" onClick={() => signIn()}>
+          Login
+        </Button>
+      )}
     </nav>
   );
 };

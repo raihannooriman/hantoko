@@ -93,7 +93,7 @@ const DetailProductPage = ({
             />
           </div>
           <div className="w-[40%]">
-            <h1 className="font-bold text-2xl">{product?.name}</h1>
+            <h1 className="font-bold">{product?.name}</h1>
             <h3>{product?.category}</h3>
             <h3 className="font-bold mt-2">{convertIDR(product?.price)}</h3>
             <p className="mt-2 text-justify">{product?.description}</p>

@@ -1,4 +1,4 @@
 const AdminProfilePage = () => {
-  return <div className="">Admin Profile Page</div>;
+  return <div>Admin Profile Page</div>;
 };
 export default AdminProfilePage;
