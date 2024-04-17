@@ -87,7 +87,6 @@ const AdminUsersPage = (props: PropTypes) => {
           setUpdatedUser={setUpdatedUser}
           setUsers={setUsers}
           setToaster={setToaster}
-          session={session}
         ></ModalUpdateUser>
       )}
       {Object.keys(deleteUser).length && (
@@ -96,7 +95,6 @@ const AdminUsersPage = (props: PropTypes) => {
           setDeletedUser={setDeletedUser}
           setUsers={setUsers}
           setToaster={setToaster}
-          session={session}
         ></ModalDeleteUser>
       )}
     </>

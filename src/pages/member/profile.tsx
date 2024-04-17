@@ -4,7 +4,6 @@ import Input from "@/components/ui/input";
 import { uploadFile } from "@/lib/firebase/service";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import {
   Dispatch,
@@ -21,18 +20,13 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
   const [profile, setProfile] = useState<User | any>({});
   const [changeImage, setChangeImage] = useState<File | any>({});
   const [isLoading, setIsLoading] = useState("");
-  const session: any = useSession();
+  const getProfile = async () => {
+    const { data } = await userServices.getProfile();
+    setProfile(data.data);
+  };
   useEffect(() => {
-    if (session.data?.accessToken && Object.keys(profile).length === 0) {
-      const getProfile = async () => {
-        const { data } = await userServices.getProfile(
-          session.data?.accessToken
-        );
-        setProfile(data.data);
-      };
-      getProfile();
-    }
-  }, [profile, session]);
+    getProfile();
+  }, []);
   const handleChangeProfile = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading("profile");
@@ -41,10 +35,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
       fullname: form.fullname.value,
       phone: form.phone.value,
     };
-    const result = await userServices.updateProfile(
-      data,
-      session.data?.accessToken
-    );
+    const result = await userServices.updateProfile(data);
     if (result.status === 200) {
       setIsLoading("");
       setProfile({
@@ -76,10 +67,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
         async (status: boolean, newImageURL: string) => {
           if (status) {
             const data = { image: newImageURL };
-            const result = await userServices.updateProfile(
-              data,
-              session.data?.accessToken
-            );
+            const result = await userServices.updateProfile(data);
             if (result.status === 200) {
               setIsLoading("");
               setProfile({
@@ -117,10 +105,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
       encryptedPassword: profile.password,
     };
     try {
-      const result = await userServices.updateProfile(
-        data,
-        session.data?.accessToken
-      );
+      const result = await userServices.updateProfile(data);
       if (result.status === 200) {
         setIsLoading("");
         form.reset();
@@ -142,14 +127,14 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
       <h1 className="font-bold">Profile</h1>
       <div className="flex gap-5 mt-5">
         <div className="flex items-center justify-center w-[25%] flex-col p-3">
-          <p className="text-2xl mb-5">Edit Picture</p>
+          <h1 className="mb-5">Edit Picture</h1>
           {profile.image ? (
             <Image
               src={profile.image}
               width={200}
               height={100}
               alt="profile"
-              className="rounded-[50%] w-48 h-48 bg-[#eee]"
+              className="rounded-[50%] w-48 h-48 bg-[#eee] object-cover object-center"
             />
           ) : (
             <div className="rounded-[50%] flex items-center justify-center text-4xl font-bold aspect-square w-[80%] bg-[#eee]">

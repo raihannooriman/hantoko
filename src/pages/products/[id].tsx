@@ -38,10 +38,7 @@ const DetailProductPage = ({
         newCart = [...cart, { id, size: selectedSize, qty: 1 }];
       }
       try {
-        const result = await userServices.addToCart(
-          { carts: newCart },
-          session?.data?.accessToken
-        );
+        const result = await userServices.addToCart({ carts: newCart });
         if (result.status === 200) {
           setSelectedSize("");
           setToaster({
@@ -64,8 +61,8 @@ const DetailProductPage = ({
   const handleSizeChange = (size: string) => {
     setSelectedSize(size);
   };
-  const getCart = async (token: string) => {
-    const { data } = await userServices.getCart(token);
+  const getCart = async () => {
+    const { data } = await userServices.getCart();
     setCart(data.data);
   };
   useEffect(() => {
@@ -73,7 +70,7 @@ const DetailProductPage = ({
   }, [id]);
   useEffect(() => {
     if (session.data?.accessToken) {
-      getCart(session.data?.accessToken);
+      getCart();
     }
   }, [session]);
   return (

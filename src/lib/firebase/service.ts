@@ -56,7 +56,6 @@ export async function addData(
     })
     .catch((error) => {
       callback(false);
-      console.log(error);
     });
 }
 export async function updateData(
