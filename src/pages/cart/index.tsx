@@ -18,8 +18,8 @@ const CartPage = (props: Proptypes) => {
   const [cart, setCart] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const session: any = useSession();
-  const getCart = async (token: string) => {
-    const { data } = await userServices.getCart(token);
+  const getCart = async () => {
+    const { data } = await userServices.getCart();
     setCart(data.data);
   };
   const getAllProducts = async () => {
@@ -31,7 +31,7 @@ const CartPage = (props: Proptypes) => {
   }, []);
   useEffect(() => {
     if (session.data?.accessToken) {
-      getCart(session.data?.accessToken);
+      getCart();
     }
   }, [session]);
   const getProduct = (id: string) => {
