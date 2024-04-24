@@ -16,14 +16,15 @@ const DetailProductPage = () => {
   const session: any = useSession();
   const [product, setProduct] = useState<Product | any>({});
   const [cart, setCart] = useState<any>([]);
-  const { status } = useSession();
+  const { status } = session;
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState("");
   const handleAddToCart = async () => {
-    if (selectedSize !== "" && cart) {
-      // Penambahan pengecekan cart
+    if (selectedSize !== "") {
       let newCart = [];
       if (
+        cart &&
+        cart.length > 0 &&
         cart.filter((item: any) => item.id === id && item.size === selectedSize)
           .length > 0
       ) {
@@ -34,7 +35,7 @@ const DetailProductPage = () => {
           return item;
         });
       } else {
-        newCart = [...cart, { id, size: selectedSize, qty: 1 }];
+        newCart = [...(cart || []), { id, size: selectedSize, qty: 1 }]; // Inisialisasi cart sebagai array kosong jika undefined
       }
       try {
         const result = await userServices.addToCart({ carts: newCart });
@@ -53,7 +54,6 @@ const DetailProductPage = () => {
       }
     }
   };
-
   const getDetailProduct = async (id: string) => {
     const { data } = await productServices.getDetailProduct(id);
     setProduct(data.data);

@@ -1,18 +1,12 @@
 import AdminLayout from "@/components/layout/adminlayout";
 import userServices from "@/services/user";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/ui/button";
 import ModalUpdateUser from "./modalUpdate";
 import ModalDeleteUser from "./modalDelete";
 import { User } from "@/types/user.type";
-import { useSession } from "next-auth/react";
 
-type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-const AdminUsersPage = (props: PropTypes) => {
-  const { setToaster } = props;
-  const session: any = useSession();
+const AdminUsersPage = () => {
   const [updatedUser, setUpdatedUser] = useState<User | {}>({});
   const [users, setUsers] = useState<User[]>([]);
   const [deleteUser, setDeletedUser] = useState<User | {}>({});
@@ -86,7 +80,6 @@ const AdminUsersPage = (props: PropTypes) => {
           updatedUser={updatedUser}
           setUpdatedUser={setUpdatedUser}
           setUsers={setUsers}
-          setToaster={setToaster}
         ></ModalUpdateUser>
       )}
       {Object.keys(deleteUser).length && (
@@ -94,7 +87,6 @@ const AdminUsersPage = (props: PropTypes) => {
           deletedUser={deleteUser}
           setDeletedUser={setDeletedUser}
           setUsers={setUsers}
-          setToaster={setToaster}
         ></ModalDeleteUser>
       )}
     </>

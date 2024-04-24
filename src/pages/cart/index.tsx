@@ -8,12 +8,9 @@ import { convertIDR } from "@/utils/currency";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
-type Proptypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-const CartPage = (props: Proptypes) => {
+const CartPage = () => {
   const [cart, setCart] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const session: any = useSession();

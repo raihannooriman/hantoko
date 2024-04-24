@@ -3,27 +3,28 @@ import Input from "@/components/ui/input";
 import InputFile from "@/components/ui/inputFile";
 import Modal from "@/components/ui/modal";
 import Select from "@/components/ui/select";
+import { ToasterContext } from "@/contexts/ToasterContext";
 import { uploadFile } from "@/lib/firebase/service";
 import productServices from "@/services/product";
 import { Product } from "@/types/product.type";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
 type Proptypes = {
   updatedProduct: Product | any;
   setUpdatedProduct: Dispatch<SetStateAction<boolean>>;
-  setToaster: Dispatch<SetStateAction<{}>>;
   setProduct: Dispatch<SetStateAction<Product[]>>;
 };
 
 const ModalUpdateProduct = (props: Proptypes) => {
-  const {
-    updatedProduct = {},
-    setUpdatedProduct,
-    setToaster,
-    setProduct,
-  } = props;
+  const { updatedProduct = {}, setUpdatedProduct, setProduct } = props;
+  const { setToaster } = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState(updatedProduct.stock ?? []);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
