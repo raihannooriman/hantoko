@@ -20,7 +20,8 @@ const DetailProductPage = () => {
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState("");
   const handleAddToCart = async () => {
-    if (selectedSize !== "") {
+    if (selectedSize !== "" && cart) {
+      // Penambahan pengecekan cart
       let newCart = [];
       if (
         cart.filter((item: any) => item.id === id && item.size === selectedSize)
@@ -52,6 +53,7 @@ const DetailProductPage = () => {
       }
     }
   };
+
   const getDetailProduct = async (id: string) => {
     const { data } = await productServices.getDetailProduct(id);
     setProduct(data.data);
