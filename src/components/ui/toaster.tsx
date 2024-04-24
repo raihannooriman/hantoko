@@ -1,13 +1,16 @@
-import React, { Dispatch, SetStateAction } from "react";
+import { ToasterContext } from "@/contexts/ToasterContext";
+import { ToasterType } from "@/types/toaster.type";
+import React, { useContext, useEffect } from "react";
 
-type PropTypes = {
-  message?: string;
-  className?: string;
-  setToaster: Dispatch<SetStateAction<{}>>;
-};
-
-const Toaster = (props: PropTypes) => {
-  const { message, className, setToaster } = props;
+const Toaster = () => {
+  const { toaster, setToaster }: ToasterType = useContext(ToasterContext);
+  useEffect(() => {
+    if (Object.keys(toaster).length > 0) {
+      setTimeout(() => {
+        setToaster({});
+      }, 2000);
+    }
+  }, [toaster, setToaster]);
   return (
     <div
       className={`fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 border rounded-lg shadow-sm px-6 py-3 overflow-hidden bg-white`}
@@ -15,25 +18,25 @@ const Toaster = (props: PropTypes) => {
       <div className="flex items-center justify-center gap-3">
         <div>
           <div className="text-xl font-bold min-w-44">
-            {className === "success"
+            {toaster.className === "success"
               ? "Success!!!"
-              : className === "warning"
+              : toaster.className === "warning"
               ? "Warning!!!"
-              : className === "error"
+              : toaster.className === "error"
               ? "Error!!!"
               : ""}
           </div>
           <div>
-            <p>{message}</p>
+            <p>{toaster.message}</p>
           </div>
         </div>
         <div
           className={`w-full h-2 absolute bottom-0 left-0 ${
-            className === "success"
+            toaster.className === "success"
               ? "bg-green-500"
-              : className === "warning"
+              : toaster.className === "warning"
               ? "bg-yellow-400"
-              : className === "error"
+              : toaster.className === "error"
               ? "bg-red-500"
               : ""
           }`}

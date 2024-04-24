@@ -14,7 +14,6 @@ type Proptypes = {
   setToaster: Dispatch<SetStateAction<{}>>;
 };
 const CartPage = (props: Proptypes) => {
-  const { setToaster } = props;
   const [cart, setCart] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const session: any = useSession();

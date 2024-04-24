@@ -127,7 +127,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
       <h1 className="font-bold">Profile</h1>
       <div className="flex gap-5 mt-5">
         <div className="flex items-center justify-center w-[25%] flex-col p-3">
-          <h1 className="mb-5">Edit Picture</h1>
+          <h1 className="pb-10">Edit Picture</h1>
           {profile.image ? (
             <Image
               src={profile.image}
@@ -172,7 +172,7 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
           </form>
         </div>
         <div className="w-[50%] p-3">
-          <p className="text-2xl">Edit Profile</p>
+          <h1>Edit Profile</h1>
           <form onSubmit={handleChangeProfile}>
             <Input
               label="Fullname"
@@ -210,8 +210,8 @@ const ProfilePage = ({ setToaster }: PropTypes) => {
             </Button>
           </form>
         </div>
-        <div className="w-[25%]">
-          <p className="text-2xl p-3">Change Password</p>
+        <div className="w-[25%] p-3">
+          <h1>Change Password</h1>
           <form onSubmit={handleChangePassword}>
             <Input
               name="old-password"

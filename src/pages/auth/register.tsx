@@ -1,15 +1,13 @@
 import AuthLayout from "@/components/layout/authlayout";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
+import { ToasterContext } from "@/contexts/ToasterContext";
 import authServices from "@/services/auth";
 import { useRouter } from "next/router";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 
-const RegisterPage = ({
-  setToaster,
-}: {
-  setToaster: Dispatch<SetStateAction<{}>>;
-}) => {
+const RegisterPage = () => {
+  const { setToaster } = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
 
@@ -40,7 +38,7 @@ const RegisterPage = ({
       setIsLoading(false);
       setToaster({
         className: "error",
-        message: "Email atau password salah",
+        message: "Email sudah terdaftar",
       });
     }
   };

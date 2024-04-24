@@ -1,4 +1,5 @@
 import Button from "@/components/ui/button";
+import { ToasterContext } from "@/contexts/ToasterContext";
 import productServices from "@/services/product";
 import userServices from "@/services/user";
 import { Product } from "@/types/product.type";
@@ -7,13 +8,10 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-const DetailProductPage = ({
-  setToaster,
-}: {
-  setToaster: Dispatch<SetStateAction<{}>>;
-}) => {
+const DetailProductPage = () => {
+  const { setToaster } = useContext(ToasterContext);
   const { id } = useRouter().query;
   const session: any = useSession();
   const [product, setProduct] = useState<Product | any>({});
