@@ -52,10 +52,13 @@ const CartPage = () => {
   };
 
   const getTotalPrice = () => {
+    if (!Array.isArray(cart) || cart.length === 0) {
+      return 0;
+    }
     const total = cart.reduce(
       (acc: number, item: { id: string; size: string; qty: number }) => {
         const product: any = getProduct(item.id);
-        return (acc += parseInt(product?.price) * item.qty);
+        return acc + (parseInt(product?.price) * item.qty || 0);
       },
       0
     );
@@ -70,54 +73,58 @@ const CartPage = () => {
         <div className="w-[70%]">
           <h1>Cart</h1>
           <div className="w-full mt-4 flex flex-col gap-5">
-            {cart.map((item: { id: string; size: string; qty: number }) => (
-              <Fragment key={`${item.id}-${item.size}`}>
-                <div className="w-full flex gap-5">
-                  {getProduct(item.id)?.image && (
-                    <Image
-                      src={`${getProduct(item.id)?.image}`}
-                      width={160}
-                      height={160}
-                      alt={`${item.id}-${item.size}`}
-                      className="w-36 h-36 rounded-lg"
-                    />
-                  )}
-                  <div className="w-full">
-                    <h4 className="font-bold text-lg">
-                      {getProduct(item.id)?.name}
-                    </h4>
-                    <p className="mt-1">{getProduct(item.id)?.category}</p>
-                    <div className="flex items-center gap-4 mt-1">
-                      <label className="flex items-center gap-2">
-                        Size
-                        <Select
-                          name="size"
-                          options={getOptionSize(item.id, item.size)}
-                        />
-                      </label>
-                      <label className="flex items-center gap-2">
-                        Quantity
-                        <Input
-                          name="qty"
-                          type="number"
-                          className="w-16 text-center"
-                          defaultValue={item.qty}
-                        />
-                      </label>
+            {Array.isArray(cart) && cart.length > 0 ? (
+              cart.map((item: { id: string; size: string; qty: number }) => (
+                <Fragment key={`${item.id}-${item.size}`}>
+                  <div className="w-full flex gap-5">
+                    {getProduct(item.id)?.image && (
+                      <Image
+                        src={`${getProduct(item.id)?.image}`}
+                        width={160}
+                        height={160}
+                        alt={`${item.id}-${item.size}`}
+                        className="w-36 h-36 rounded-lg"
+                      />
+                    )}
+                    <div className="w-full">
+                      <h4 className="font-bold text-lg">
+                        {getProduct(item.id)?.name}
+                      </h4>
+                      <p className="mt-1">{getProduct(item.id)?.category}</p>
+                      <div className="flex items-center gap-4 mt-1">
+                        <label className="flex items-center gap-2">
+                          Size
+                          <Select
+                            name="size"
+                            options={getOptionSize(item.id, item.size)}
+                          />
+                        </label>
+                        <label className="flex items-center gap-2">
+                          Quantity
+                          <Input
+                            name="qty"
+                            type="number"
+                            className="w-16 text-center"
+                            defaultValue={item.qty}
+                          />
+                        </label>
+                      </div>
+                      <button type="button" className="mt-2 text-xl">
+                        <i className="bx bxs-trash text-xl" />
+                      </button>
                     </div>
-                    <button type="button" className="mt-2 text-xl">
-                      <i className="bx bxs-trash text-xl" />
-                    </button>
+                    <div>
+                      <h4 className="font-bold text-lg">
+                        {convertIDR(getProduct(item.id)?.price)}
+                      </h4>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-lg">
-                      {convertIDR(getProduct(item.id)?.price)}
-                    </h4>
-                  </div>
-                </div>
-                <hr />
-              </Fragment>
-            ))}
+                  <hr />
+                </Fragment>
+              ))
+            ) : (
+              <p>Pesanan belum ada</p>
+            )}
           </div>
         </div>
         <div className="w-[30%]">

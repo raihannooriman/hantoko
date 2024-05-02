@@ -16,27 +16,31 @@ const DetailProductPage = () => {
   const session: any = useSession();
   const [product, setProduct] = useState<Product | any>({});
   const [cart, setCart] = useState<any>([]);
-  const { status } = session;
+  const { status }: any = useSession();
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState("");
   const handleAddToCart = async () => {
     if (selectedSize !== "") {
       let newCart = [];
-      if (
-        cart &&
-        cart.length > 0 &&
-        cart.filter((item: any) => item.id === id && item.size === selectedSize)
-          .length > 0
-      ) {
-        newCart = cart.map((item: any) => {
-          if (item.id === id && item.size === selectedSize) {
-            item.qty += 1;
-          }
-          return item;
-        });
+      if (Array.isArray(cart) && cart.length > 0) {
+        if (
+          cart.filter(
+            (item: any) => item.id === id && item.size === selectedSize
+          ).length > 0
+        ) {
+          newCart = cart.map((item: any) => {
+            if (item.id === id && item.size === selectedSize) {
+              item.qty += 1;
+            }
+            return item;
+          });
+        } else {
+          newCart = [...cart, { id: id, size: selectedSize, qty: 1 }];
+        }
       } else {
-        newCart = [...(cart || []), { id, size: selectedSize, qty: 1 }]; // Inisialisasi cart sebagai array kosong jika undefined
+        newCart = [{ id: id, size: selectedSize, qty: 1 }];
       }
+
       try {
         const result = await userServices.addToCart({ carts: newCart });
         if (result.status === 200) {
@@ -54,6 +58,7 @@ const DetailProductPage = () => {
       }
     }
   };
+
   const getDetailProduct = async (id: string) => {
     const { data } = await productServices.getDetailProduct(id);
     setProduct(data.data);
@@ -63,7 +68,9 @@ const DetailProductPage = () => {
   };
   const getCart = async () => {
     const { data } = await userServices.getCart();
-    setCart(data.data);
+    if (data.data) {
+      setCart(data.data);
+    }
   };
   useEffect(() => {
     getDetailProduct(id as string);
