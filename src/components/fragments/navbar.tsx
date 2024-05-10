@@ -44,7 +44,7 @@ const Navbar = () => {
               height={40}
               src={data?.user.image}
               alt={data?.user.name}
-              className="rounded-full"
+              className="rounded-full object-cover object-center cursor-pointer"
               onClick={() => setDropdownUser(!dropdownUser)}
             />
             <div

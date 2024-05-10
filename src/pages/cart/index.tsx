@@ -1,6 +1,7 @@
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Select from "@/components/ui/select";
+import { ToasterContext } from "@/contexts/ToasterContext";
 import productServices from "@/services/product";
 import userServices from "@/services/user";
 import { Product } from "@/types/product.type";
@@ -8,11 +9,12 @@ import { convertIDR } from "@/utils/currency";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 
 const CartPage = () => {
   const [cart, setCart] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const { setToaster } = useContext(ToasterContext);
   const session: any = useSession();
   const getCart = async () => {
     const { data } = await userServices.getCart();
@@ -64,6 +66,28 @@ const CartPage = () => {
     );
     return total;
   };
+  const handleDeleteCart = async (id: string, size: string) => {
+    const newCart = cart.filter((item: { id: string; size: string }) => {
+      return item.id !== id || item.size !== size;
+    });
+    try {
+      const result = await userServices.addToCart({
+        carts: newCart,
+      });
+      if (result.status === 200) {
+        setCart(newCart);
+        setToaster({
+          message: "Success delete item.",
+          className: "success",
+        });
+      }
+    } catch (error) {
+      setToaster({
+        message: "failed delete item.",
+        className: "error",
+      });
+    }
+  };
   return (
     <>
       <Head>
@@ -97,6 +121,7 @@ const CartPage = () => {
                           <Select
                             name="size"
                             options={getOptionSize(item.id, item.size)}
+                            disabled
                           />
                         </label>
                         <label className="flex items-center gap-2">
@@ -106,10 +131,15 @@ const CartPage = () => {
                             type="number"
                             className="w-16 text-center"
                             defaultValue={item.qty}
+                            disabled
                           />
                         </label>
                       </div>
-                      <button type="button" className="mt-2 text-xl">
+                      <button
+                        onClick={() => handleDeleteCart(item.id, item.size)}
+                        type="button"
+                        className="mt-2 text-xl"
+                      >
                         <i className="bx bxs-trash text-xl" />
                       </button>
                     </div>
@@ -123,7 +153,11 @@ const CartPage = () => {
                 </Fragment>
               ))
             ) : (
-              <p>Pesanan belum ada</p>
+              <div className="mt-3">
+                <h1 className="text-3xl font-medium text-[#8f8f8f]">
+                  Pesananmu masih kosong
+                </h1>
+              </div>
             )}
           </div>
         </div>
