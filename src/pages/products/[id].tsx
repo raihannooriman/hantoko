@@ -22,23 +22,18 @@ const DetailProductPage = () => {
   const handleAddToCart = async () => {
     if (selectedSize !== "") {
       let newCart = [];
-      if (Array.isArray(cart) && cart.length > 0) {
-        if (
-          cart.filter(
-            (item: any) => item.id === id && item.size === selectedSize
-          ).length > 0
-        ) {
-          newCart = cart.map((item: any) => {
-            if (item.id === id && item.size === selectedSize) {
-              item.qty += 1;
-            }
-            return item;
-          });
-        } else {
-          newCart = [...cart, { id: id, size: selectedSize, qty: 1 }];
-        }
+      if (
+        cart.filter((item: any) => item.id === id && item.size === selectedSize)
+          .length > 0
+      ) {
+        newCart = cart.map((item: any) => {
+          if (item.id === id && item.size === selectedSize) {
+            item.qty += 1;
+          }
+          return item;
+        });
       } else {
-        newCart = [{ id: id, size: selectedSize, qty: 1 }];
+        newCart = [...cart, { id: id, size: selectedSize, qty: 1 }];
       }
 
       try {
@@ -68,9 +63,7 @@ const DetailProductPage = () => {
   };
   const getCart = async () => {
     const { data } = await userServices.getCart();
-    if (data.data) {
-      setCart(data.data);
-    }
+    setCart(data.data);
   };
   useEffect(() => {
     getDetailProduct(id as string);

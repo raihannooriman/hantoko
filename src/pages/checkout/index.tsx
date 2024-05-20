@@ -9,10 +9,9 @@ import { convertIDR } from "@/utils/currency";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 
-const CartPage = () => {
+const CheckoutPage = () => {
   const [cart, setCart] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const { setToaster } = useContext(ToasterContext);
@@ -89,7 +88,7 @@ const CartPage = () => {
   return (
     <>
       <Head>
-        <title>Cart</title>
+        <title>Checkout</title>
       </Head>
       <div className="py-20 px-[15vw] flex gap-14">
         <div className="w-[70%]">
@@ -105,41 +104,21 @@ const CartPage = () => {
                         width={160}
                         height={160}
                         alt={`${item.id}-${item.size}`}
-                        className="w-36 h-36 rounded-lg"
+                        className="w-16 h-16 rounded-lg"
                       />
                     )}
                     <div className="w-full">
                       <h4 className="font-bold text-lg">
                         {getProduct(item.id)?.name}
                       </h4>
-                      <p className="mt-1">{getProduct(item.id)?.category}</p>
-                      <div className="flex items-center gap-4 mt-1">
+                      <div className="mb-2">
                         <label className="flex items-center gap-2">
-                          Size
-                          <Select
-                            name="size"
-                            options={getOptionSize(item.id, item.size)}
-                            disabled
-                          />
+                          Size {item.size}
                         </label>
                         <label className="flex items-center gap-2">
-                          Quantity
-                          <Input
-                            name="qty"
-                            type="number"
-                            className="w-16 text-center"
-                            defaultValue={item.qty}
-                            disabled
-                          />
+                          Quantity {item.qty}
                         </label>
                       </div>
-                      <button
-                        onClick={() => handleDeleteCart(item.id, item.size)}
-                        type="button"
-                        className="mt-2 text-xl"
-                      >
-                        <i className="bx bxs-trash text-xl" />
-                      </button>
                     </div>
                     <div>
                       <h4 className="font-bold text-lg">
@@ -179,14 +158,12 @@ const CartPage = () => {
             <p>{convertIDR(getTotalPrice())}</p>
           </div>
           <hr />
-          <Link href="/checkout">
-            <Button type="button" className="w-full mt-5">
-              Checkout
-            </Button>
-          </Link>
+          <Button type="button" className="w-full mt-5">
+            Checkout
+          </Button>
         </div>
       </div>
     </>
   );
 };
-export default CartPage;
+export default CheckoutPage;
