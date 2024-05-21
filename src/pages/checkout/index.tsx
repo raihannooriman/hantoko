@@ -13,7 +13,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import ModalChangeAddress from "./modalChangeAddress";
 
 const CheckoutPage = () => {
-  const [profile, setProfile] = useState<any>({ address: [] });
+  const [profile, setProfile] = useState<any>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedAddress, setSelectedAddress] = useState(0);
   const [changeAddress, setChangeAddress] = useState(false);
@@ -24,10 +24,11 @@ const CheckoutPage = () => {
     const getProfile = async () => {
       const { data } = await userServices.getProfile();
       setProfile(data.data);
-      const mainAddressIndex = data.data.address.findIndex(
-        (address: { isMain: boolean }) => address.isMain
-      );
-      setSelectedAddress(mainAddressIndex !== -1 ? mainAddressIndex : 0);
+      data.data.address.filter((address: { isMain: boolean }, id: number) => {
+        if (address.isMain) {
+          setSelectedAddress(id);
+        }
+      });
     };
     if (session.data?.accessToken) {
       getProfile();
@@ -66,21 +67,27 @@ const CheckoutPage = () => {
           <h1>Checkout</h1>
           <div className="w-full border border-solid border-[#ddd] p-3 rounded-lg mt-3">
             <h2 className="mb-3">Address</h2>
-            <div className="flex flex-col">
-              <p>
-                {profile?.address[selectedAddress]?.recipient} -{" "}
-                {profile?.address[selectedAddress]?.phone}
-              </p>
-              <p>{profile?.address[selectedAddress]?.addressLine}</p>
-              <p className="mb-3">
-                Note: {profile?.address[selectedAddress]?.note}
-              </p>
-              <Button type="button"> Change Address</Button>
-            </div>
+            {profile?.address?.length > 0 ? (
+              <div className="flex flex-col">
+                <p>
+                  {profile?.address[selectedAddress]?.recipient} -{" "}
+                  {profile?.address[selectedAddress]?.phone}
+                </p>
+                <p>{profile?.address[selectedAddress]?.addressLine}</p>
+                <p className="mb-3">
+                  Note: {profile?.address[selectedAddress]?.note}
+                </p>
+                <Button type="button" onClick={() => setChangeAddress(true)}>
+                  Change Address
+                </Button>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-          <div className="w-full border border-solid border-[#ddd] p-3 rounded-lg mt-3 flex flex-col gap-5">
-            {profile?.carts?.length > 0 ? (
-              profile?.carts?.map(
+          {profile?.carts?.length > 0 ? (
+            <div className="w-full border border-solid border-[#ddd] p-3 rounded-lg mt-3 flex flex-col gap-5">
+              {profile?.carts?.map(
                 (item: { id: string; size: string; qty: number }) => (
                   <Fragment key={`${item.id}-${item.size}`}>
                     <div className="w-full flex gap-5">
@@ -115,15 +122,15 @@ const CheckoutPage = () => {
                     <hr />
                   </Fragment>
                 )
-              )
-            ) : (
-              <div className="mt-3">
-                <h1 className="text-3xl font-medium text-[#8f8f8f]">
-                  Pesananmu masih kosong
-                </h1>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          ) : (
+            <div className="mt-3">
+              <h1 className="text-3xl font-medium text-[#8f8f8f]">
+                Pesananmu masih kosong
+              </h1>
+            </div>
+          )}
         </div>
         <div className="w-[30%]">
           <h1>Summary</h1>
@@ -146,10 +153,18 @@ const CheckoutPage = () => {
           </div>
           <hr />
           <Button type="button" className="w-full mt-5">
-            Checkout
+            Process Payment
           </Button>
         </div>
       </div>
+      {changeAddress && (
+        <ModalChangeAddress
+          address={profile.address}
+          setChangeAddress={setChangeAddress}
+          selectedAddress={selectedAddress}
+          setSelectedAddress={setSelectedAddress}
+        />
+      )}
     </>
   );
 };
