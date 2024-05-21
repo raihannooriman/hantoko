@@ -10,51 +10,44 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { Fragment, useContext, useEffect, useState } from "react";
+import ModalChangeAddress from "./modalChangeAddress";
 
 const CheckoutPage = () => {
-  const [cart, setCart] = useState<any>([]);
+  const [profile, setProfile] = useState<any>({ address: [] });
   const [products, setProducts] = useState<Product[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState(0);
+  const [changeAddress, setChangeAddress] = useState(false);
   const { setToaster } = useContext(ToasterContext);
   const session: any = useSession();
-  const getCart = async () => {
-    const { data } = await userServices.getCart();
-    setCart(data.data);
-  };
-  const getAllProducts = async () => {
-    const { data } = await productServices.getAllProducts();
-    setProducts(data.data);
-  };
+
   useEffect(() => {
-    getAllProducts();
-  }, []);
-  useEffect(() => {
+    const getProfile = async () => {
+      const { data } = await userServices.getProfile();
+      setProfile(data.data);
+      const mainAddressIndex = data.data.address.findIndex(
+        (address: { isMain: boolean }) => address.isMain
+      );
+      setSelectedAddress(mainAddressIndex !== -1 ? mainAddressIndex : 0);
+    };
     if (session.data?.accessToken) {
-      getCart();
+      getProfile();
     }
   }, [session]);
+
+  useEffect(() => {
+    const getAllProducts = async () => {
+      const { data } = await productServices.getAllProducts();
+      setProducts(data.data);
+    };
+    getAllProducts();
+  }, []);
   const getProduct = (id: string) => {
     const product: any = products.find((product: Product) => product.id === id);
     return product;
   };
-  const getOptionSize = (id: string, selected: string) => {
-    const product = products.find((product: Product) => product.id === id);
-    const options = product?.stock.map(
-      (stock: { size: string; qty: number }) => {
-        if (stock.qty > 0) {
-          return {
-            label: stock.size,
-            value: stock.size,
-            selected: stock.size === selected,
-          };
-        }
-      }
-    );
-    const data = options?.filter((option) => option !== undefined);
-    return data;
-  };
 
   const getTotalPrice = () => {
-    const total = cart.reduce(
+    const total = profile?.carts?.reduce(
       (acc: number, item: { id: string; size: string; qty: number }) => {
         const product: any = getProduct(item.id);
         return acc + parseInt(product?.price) * item.qty;
@@ -63,28 +56,6 @@ const CheckoutPage = () => {
     );
     return total;
   };
-  const handleDeleteCart = async (id: string, size: string) => {
-    const newCart = cart.filter((item: { id: string; size: string }) => {
-      return item.id !== id || item.size !== size;
-    });
-    try {
-      const result = await userServices.addToCart({
-        carts: newCart,
-      });
-      if (result.status === 200) {
-        setCart(newCart);
-        setToaster({
-          message: "Success delete item.",
-          className: "success",
-        });
-      }
-    } catch (error) {
-      setToaster({
-        message: "failed delete item.",
-        className: "error",
-      });
-    }
-  };
   return (
     <>
       <Head>
@@ -92,43 +63,59 @@ const CheckoutPage = () => {
       </Head>
       <div className="py-20 px-[15vw] flex gap-14">
         <div className="w-[70%]">
-          <h1>Cart</h1>
-          <div className="w-full mt-4 flex flex-col gap-5">
-            {cart.length > 0 ? (
-              cart.map((item: { id: string; size: string; qty: number }) => (
-                <Fragment key={`${item.id}-${item.size}`}>
-                  <div className="w-full flex gap-5">
-                    {getProduct(item.id)?.image && (
-                      <Image
-                        src={`${getProduct(item.id)?.image}`}
-                        width={160}
-                        height={160}
-                        alt={`${item.id}-${item.size}`}
-                        className="w-16 h-16 rounded-lg"
-                      />
-                    )}
-                    <div className="w-full">
-                      <h4 className="font-bold text-lg">
-                        {getProduct(item.id)?.name}
-                      </h4>
-                      <div className="mb-2">
-                        <label className="flex items-center gap-2">
-                          Size {item.size}
-                        </label>
-                        <label className="flex items-center gap-2">
-                          Quantity {item.qty}
-                        </label>
+          <h1>Checkout</h1>
+          <div className="w-full border border-solid border-[#ddd] p-3 rounded-lg mt-3">
+            <h2 className="mb-3">Address</h2>
+            <div className="flex flex-col">
+              <p>
+                {profile?.address[selectedAddress]?.recipient} -{" "}
+                {profile?.address[selectedAddress]?.phone}
+              </p>
+              <p>{profile?.address[selectedAddress]?.addressLine}</p>
+              <p className="mb-3">
+                Note: {profile?.address[selectedAddress]?.note}
+              </p>
+              <Button type="button"> Change Address</Button>
+            </div>
+          </div>
+          <div className="w-full border border-solid border-[#ddd] p-3 rounded-lg mt-3 flex flex-col gap-5">
+            {profile?.carts?.length > 0 ? (
+              profile?.carts?.map(
+                (item: { id: string; size: string; qty: number }) => (
+                  <Fragment key={`${item.id}-${item.size}`}>
+                    <div className="w-full flex gap-5">
+                      {getProduct(item.id)?.image && (
+                        <Image
+                          src={`${getProduct(item.id)?.image}`}
+                          width={160}
+                          height={160}
+                          alt={`${item.id}-${item.size}`}
+                          className="w-16 h-16 rounded-lg"
+                        />
+                      )}
+                      <div className="w-full">
+                        <h4 className="font-bold text-lg">
+                          {getProduct(item.id)?.name}
+                        </h4>
+                        <div className="mb-2">
+                          <label className="flex items-center gap-2">
+                            Size {item.size}
+                          </label>
+                          <label className="flex items-center gap-2">
+                            Quantity {item.qty}
+                          </label>
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-lg">
+                          {convertIDR(getProduct(item.id)?.price)}
+                        </h4>
                       </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-lg">
-                        {convertIDR(getProduct(item.id)?.price)}
-                      </h4>
-                    </div>
-                  </div>
-                  <hr />
-                </Fragment>
-              ))
+                    <hr />
+                  </Fragment>
+                )
+              )
             ) : (
               <div className="mt-3">
                 <h1 className="text-3xl font-medium text-[#8f8f8f]">
