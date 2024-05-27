@@ -53,17 +53,12 @@ const CartPage = () => {
     const data = options?.filter((option) => option !== undefined);
     return data;
   };
-
-  const getTotalPrice = () => {
-    const total = cart.reduce(
-      (acc: number, item: { id: string; size: string; qty: number }) => {
-        const product: any = getProduct(item.id);
-        return acc + parseInt(product?.price) * item.qty;
-      },
+  const getTotalPrice = () =>
+    cart.reduce(
+      (acc: number, { id, qty }: { id: string; qty: number }) =>
+        acc + (parseInt(getProduct(id)?.price) || 0) * qty,
       0
     );
-    return total;
-  };
   const handleDeleteCart = async (id: string, size: string) => {
     const newCart = cart.filter((item: { id: string; size: string }) => {
       return item.id !== id || item.size !== size;
