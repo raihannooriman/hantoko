@@ -46,17 +46,12 @@ const CheckoutPage = () => {
     const product: any = products.find((product: Product) => product.id === id);
     return product;
   };
-
-  const getTotalPrice = () => {
-    const total = profile?.carts?.reduce(
-      (acc: number, item: { id: string; size: string; qty: number }) => {
-        const product: any = getProduct(item.id);
-        return acc + parseInt(product?.price) * item.qty;
-      },
+  const getTotalPrice = () =>
+    profile?.carts?.reduce(
+      (acc: number, { id, qty }: { id: string; qty: number }) =>
+        acc + (getProduct(id)?.price ?? 0) * qty,
       0
     );
-    return total;
-  };
   return (
     <>
       <Head>
