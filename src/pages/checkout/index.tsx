@@ -24,11 +24,13 @@ const CheckoutPage = () => {
     const getProfile = async () => {
       const { data } = await userServices.getProfile();
       setProfile(data.data);
-      data.data.address.filter((address: { isMain: boolean }, id: number) => {
-        if (address.isMain) {
-          setSelectedAddress(id);
-        }
-      });
+      if (data?.data?.address?.length > 0) {
+        data.data.address.filter((address: { isMain: boolean }, id: number) => {
+          if (address.isMain) {
+            setSelectedAddress(id);
+          }
+        });
+      }
     };
     if (session.data?.accessToken) {
       getProfile();
@@ -77,7 +79,9 @@ const CheckoutPage = () => {
                 </Button>
               </div>
             ) : (
-              ""
+              <Button type="button" onClick={() => setChangeAddress(true)}>
+                Add address
+              </Button>
             )}
           </div>
           {profile?.carts?.length > 0 ? (
@@ -154,7 +158,8 @@ const CheckoutPage = () => {
       </div>
       {changeAddress && (
         <ModalChangeAddress
-          address={profile.address}
+          profile={profile}
+          setProfile={setProfile}
           setChangeAddress={setChangeAddress}
           selectedAddress={selectedAddress}
           setSelectedAddress={setSelectedAddress}
