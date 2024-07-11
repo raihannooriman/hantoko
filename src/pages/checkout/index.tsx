@@ -11,6 +11,14 @@ import Head from "next/head";
 import Image from "next/image";
 import { Fragment, useContext, useEffect, useState } from "react";
 import ModalChangeAddress from "./modalChangeAddress";
+import Script from "next/script";
+import transactionServices from "@/services/transaction";
+
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
 
 const CheckoutPage = () => {
   const [profile, setProfile] = useState<any>([]);
@@ -54,11 +62,31 @@ const CheckoutPage = () => {
         acc + (getProduct(id)?.price ?? 0) * qty,
       0
     );
+  const handleCheckout = async () => {
+    const payload = {
+      user: {
+        fullname: profile.fullname,
+        email: profile.email,
+        address: profile.address[selectedAddress],
+      },
+      transaction: {
+        items: profile.carts,
+        total: getTotalPrice(),
+      },
+    };
+    const { data } = await transactionServices.generateTransaction(payload);
+    window.snap.pay(data.data.token);
+  };
   return (
     <>
       <Head>
         <title>Checkout</title>
       </Head>
+      <Script
+        src={process.env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+        strategy="lazyOnload"
+      />
       <div className="py-20 px-[15vw] flex gap-14">
         <div className="w-[70%]">
           <h1>Checkout</h1>
@@ -151,7 +179,11 @@ const CheckoutPage = () => {
             <p>{convertIDR(getTotalPrice())}</p>
           </div>
           <hr />
-          <Button type="button" className="w-full mt-5">
+          <Button
+            type="button"
+            className="w-full mt-5"
+            onClick={() => handleCheckout()}
+          >
             Process Payment
           </Button>
         </div>
