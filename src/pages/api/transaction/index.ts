@@ -39,6 +39,7 @@ export default async function handler(
               address: payload.user.address,
               token: transaction.token,
               redirect_url: transaction.redirect_url,
+              status: "pending",
             },
             carts: [],
           };

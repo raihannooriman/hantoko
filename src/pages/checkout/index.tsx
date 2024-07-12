@@ -56,12 +56,16 @@ const CheckoutPage = () => {
     const product: any = products.find((product: Product) => product.id === id);
     return product;
   };
-  const getTotalPrice = () =>
-    profile?.carts?.reduce(
-      (acc: number, { id, qty }: { id: string; qty: number }) =>
-        acc + (getProduct(id)?.price ?? 0) * qty,
+  const getTotalPrice = () => {
+    const total = profile?.carts?.reduce(
+      (acc: number, item: { id: string; size: string; qty: number }) => {
+        const product: any = getProduct(item.id);
+        return acc + parseInt(product?.price) * item.qty;
+      },
       0
     );
+    return total;
+  };
   const handleCheckout = async () => {
     const payload = {
       user: {
@@ -75,7 +79,8 @@ const CheckoutPage = () => {
       },
     };
     const { data } = await transactionServices.generateTransaction(payload);
-    window.snap.pay(data.data.token);
+    console.log(data.data.token);
+    window.snap.pay(data.data.token); //kendala
   };
   return (
     <>
